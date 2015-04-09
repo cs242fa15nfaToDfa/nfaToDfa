@@ -12,13 +12,13 @@ function processNodes() {
 			// create element for input field for d(A,0)
 			var zeroTransition = document.createElement("INPUT");
 			zeroTransition.setAttribute("type", "text");
-			zeroTransition.setAttribute("placeholder", "𝛿(" + arr[i] + ", 0)");
+			zeroTransition.setAttribute("placeholder", "𝛿(" + nodeArray[i] + ", 0)");
 			zeroTransition.setAttribute("Name", "textelement_" + (2*i));
 			zeroTransition.setAttribute("id", "transitition_input_id_" + (2*i));
 			// create element for input for d(A, 1)
 			var oneTransition = document.createElement("INPUT");
 			oneTransition.setAttribute("type", "text");
-			oneTransition.setAttribute("placeholder", "𝛿(" + arr[i] + ", 1)");
+			oneTransition.setAttribute("placeholder", "𝛿(" + nodeArray[i] + ", 1)");
 			oneTransition.setAttribute("Name", "textelement_" + (2*i+1));
 			oneTransition.setAttribute("id", "transitition_input_id_" + (2*i+1));
 

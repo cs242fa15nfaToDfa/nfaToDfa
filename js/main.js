@@ -15,10 +15,15 @@ function validate_nodes() {
 			y.setAttribute("Name", "textelement_" + i);
 			r.appendChild(y);
 			r.setAttribute("id", "id_" + i);
-			document.getElementById("node_input").appendChild(r);
+
+			/**
+			 * JQuery conversion example
+			 */
+			var j = $(r);
+			// document.getElementById("node_input").appendChild(r);
+			$("#node_input").append(j);
 		};
 
-		// $("node_input").append($(r));
 	}
 	return true;
 

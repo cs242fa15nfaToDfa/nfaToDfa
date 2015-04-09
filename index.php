@@ -35,15 +35,11 @@
 					<footer>
 						<ul class="actions">
 							<li>
-								<form NAME="myform" ID="node_input" ACTION="" METHOD="POST">Enter nodes: <br>
-
-									<input TYPE="text" NAME="inputbox" VALUE=""><P><br>
-									<input TYPE="button" NAME="button" Value="Click" onClick="validate_nodes(this.form)"><br><br>
-									<input TYPE="reset" NAME="resetbutton" Value="Reset" onClick="resetElements()">
-
-									<input TYPE="text" NAME="inputbox" ID="comma_separated_nodes" VALUE=""><P><br>
-									<input TYPE="button" NAME="button" Value="Click" onClick="validate_nodes(this.form)">
-
+								Enter nodes:
+								<form NAME="myform" ID="node_input" ACTION="" METHOD="GET">
+									<input TYPE="text" NAME="inputbox" ID="csn_text" VALUE="">
+									<input TYPE="button" NAME="button" ID="csn_button" Value="Process" onClick="processNodes()">
+									<input TYPE="button" NAME="resetbutton" Value="Reset" onClick="resetElements()">
 								</form>
 							</li>
 						</ul>

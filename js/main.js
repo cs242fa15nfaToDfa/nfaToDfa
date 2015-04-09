@@ -1,43 +1,42 @@
-function validate_nodes() {
-	console.log("Hello World!");
+var nodeArray;
 
-	var parseStr = $("#csn_text").val();
-	
-	var numPairs = getNumNodes(parseStr);
+function processNodes() {
+	var input = $("#csn_text").val();
+	// validation step
+	var numPairs = nodeInputValidator(input);
 
 	if (numPairs > 0) {
+		$("#csn_button").hide();
+		nodeArray = input.split(",");
+		for (var i = 0; i < nodeArray.length; i++) {
+			// create element for input field for d(A,0)
+			var zeroTransition = document.createElement("INPUT");
+			zeroTransition.setAttribute("type", "text");
+			zeroTransition.setAttribute("placeholder", "𝛿(" + arr[i] + ", 0)");
+			zeroTransition.setAttribute("Name", "textelement_" + (2*i));
+			zeroTransition.setAttribute("id", "transitition_input_id_" + (2*i));
+			// create element for input for d(A, 1)
+			var oneTransition = document.createElement("INPUT");
+			oneTransition.setAttribute("type", "text");
+			oneTransition.setAttribute("placeholder", "𝛿(" + arr[i] + ", 1)");
+			oneTransition.setAttribute("Name", "textelement_" + (2*i+1));
+			oneTransition.setAttribute("id", "transitition_input_id_" + (2*i+1));
 
-		var arr = parseStr.split(",");
-		for (var i = 0; i < arr.length; i++) {
-			var y = document.createElement("INPUT");
-			y.setAttribute("type", "text");
-			y.setAttribute("placeholder", "𝛿(" + arr[i] + ", 0)");
-			y.setAttribute("Name", "textelement_" + 2*i);
-			y.setAttribute("id", "id_" + 2*i);
-
-			var z = document.createElement("INPUT");
-			z.setAttribute("type", "text");
-			z.setAttribute("placeholder", "𝛿(" + arr[i] + ", 1)");
-			z.setAttribute("Name", "textelement_" + 2*i+1);
-			z.setAttribute("id", "id_" + 2*i+1);
-
-
-			/**
-			 * JQuery conversion example
-			 */
-			var j = $(y);
-			var k = $(z);
-			// document.getElementById("node_input").appendChild(r);
-			$("#node_input").append(j);
-			$("#node_input").append(k);
+			$("#node_input").append($(zeroTransition));
+			$("#node_input").append($(oneTransition));
 		};
-
+		var submitButton = document.createElement("INPUT");
+		submitButton.setAttribute("type", "button");
+		submitButton.setAttribute("id", "submit_nfa_button");
+		submitButton.setAttribute("Value", "Transform");
+		submitButton.setAttribute("onClick", "transformNFA()");
+		// <input TYPE="button" NAME="button" ID="csn_button" Value="Click" onClick="processNodes(this.form)">
 	}
 	return true;
-
 }
 
-function getNumNodes(input_string) {
+function nodeInputValidator(input_string) {
+
 	input_string = input_string.toUpperCase();
 	var arr = input_string.split(",");
 	for (var i = 0; i < arr.length; i++) {
@@ -51,39 +50,18 @@ function getNumNodes(input_string) {
 	return arr.length;
 }
 
-/*
----------------------------------------------
-
-Function to Remove Form Elements Dynamically
----------------------------------------------
-
-*/
-function removeElement(parentDiv, childDiv){
-	if (childDiv == parentDiv){
-		alert("The parent div cannot be removed.");
-	}
-	else if (document.getElementById(childDiv)) {
-		var child = document.getElementById(childDiv);
-		var parent = document.getElementById(parentDiv);
-		parent.removeChild(child);
-	}
-	else{
-		alert("Child div has already been removed or does not exist.");
-		return false;
-	}
+function resetElements() {
+	$('input[id*="transitition_input_id_"]').remove();
+	$("#csn_button").show();
+	$("#csn_text").val("");
 }
 
-/*
------------------------------------------------------------------------------
+function transformNFA() {
+	// grab every input element
 
-Functions that will be called upon, when user click on the Reset Button.
+	// process input
 
-------------------------------------------------------------------------------
-*/
-function resetElements(){
-	document.getElementById('node_input').innerHTML = '<form NAME="myform" ID="node_input" ACTION="" METHOD="POST">Enter nodes: <br>
-									<input TYPE="text" NAME="inputbox" VALUE=""><P><br>
-									<input TYPE="button" NAME="button" Value="Click" onClick="validate_nodes(this.form)"><br><br>
-									<input TYPE="reset" NAME="resetbutton" Value="Reset" onClick="resetElements()">
-								</form>';
+	// build json
+
+	// ajax request to servers
 }

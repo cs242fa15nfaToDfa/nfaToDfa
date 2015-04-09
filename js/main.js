@@ -37,6 +37,7 @@ function processNodes() {
 		var submitButton = $(document.createElement("INPUT"));
 		submitButton.attr({
 			"type" : "button",
+			"class" : "special",
 			"id" : "submit_nfa_button",
 			"Value" : "Transform",
 			"onClick" : "transformNFA()"

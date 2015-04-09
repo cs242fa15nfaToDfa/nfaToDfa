@@ -1,7 +1,8 @@
 function validate_nodes() {
 	console.log("Hello World!");
 
-	var parseStr = $("#comma_separated_nodes").val();
+	var parseStr = $("#csn_text").val();
+	
 	var numPairs = getNumNodes(parseStr);
 
 	if (numPairs > 0) {
@@ -10,13 +11,13 @@ function validate_nodes() {
 		for (var i = 0; i < arr.length; i++) {
 			var y = document.createElement("INPUT");
 			y.setAttribute("type", "text");
-			y.setAttribute("placeholder", "d(" + arr[i] + ", 0)");
+			y.setAttribute("placeholder", "𝛿(" + arr[i] + ", 0)");
 			y.setAttribute("Name", "textelement_" + 2*i);
 			y.setAttribute("id", "id_" + 2*i);
 
 			var z = document.createElement("INPUT");
 			z.setAttribute("type", "text");
-			z.setAttribute("placeholder", "d(" + arr[i] + ", 1)");
+			z.setAttribute("placeholder", "𝛿(" + arr[i] + ", 1)");
 			z.setAttribute("Name", "textelement_" + 2*i+1);
 			z.setAttribute("id", "id_" + 2*i+1);
 

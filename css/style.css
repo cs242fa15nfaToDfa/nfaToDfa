@@ -11,7 +11,7 @@
 /* Basic */
 
 	body {
-		background: #fff;
+		background: #3cadd4;
 	}
 
 		body.is-loading *, body.is-loading *:before, body.is-loading *:after {
@@ -296,6 +296,7 @@
 	input[type="password"],
 	input[type="email"],
 	select {
+		background-color: #EDEDED;
 		height: 2.75em;
 	}
 
@@ -794,7 +795,7 @@
 		-o-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 		-ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 		transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-		background-color: #3cadd4;
+		background-color: #383b43;
 		border-radius: 30px;
 		border: 0;
 		color: #ffffff !important;
@@ -813,7 +814,7 @@
 		input[type="reset"]:hover,
 		input[type="button"]:hover,
 		.button:hover {
-			background-color: #51b6d9;
+			background-color: #1a1a1a;
 			text-decoration: none;
 		}
 

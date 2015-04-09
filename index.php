@@ -35,7 +35,7 @@
 					<footer>
 						<ul class="actions">
 							<li>
-								<form NAME="myform" ACTION="" METHOD="POST">Enter nodes: <br>
+								<form NAME="myform" ID="node_input" ACTION="" METHOD="POST">Enter nodes: <br>
 									<input TYPE="text" NAME="inputbox" VALUE=""><P><br>
 									<input TYPE="button" NAME="button" Value="Click" onClick="validate_nodes(this.form)">
 								</form>

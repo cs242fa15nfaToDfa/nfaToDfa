@@ -1,4 +1,5 @@
 function validate_nodes() {
+	nameFunction();
 	console.log("Hello World!");
 	return true;
 }
@@ -54,81 +55,11 @@ function nameFunction(){
 	var y = document.createElement("INPUT");
 	y.setAttribute("type", "text");
 	y.setAttribute("placeholder", "Name");
-	var g = document.createElement("IMG");
-	g.setAttribute("src", "delete.png");
 	increment();
 	y.setAttribute("Name", "textelement_" + i);
 	r.appendChild(y);
-	g.setAttribute("onclick", "removeElement('myForm','id_" + i + "')");
-	r.appendChild(g);
 	r.setAttribute("id", "id_" + i);
-	document.getElementById("myForm").appendChild(r);
-}
-/*
------------------------------------------------------------------------------
-
-Functions that will be called upon, when user click on the E-mail text field.
-
-------------------------------------------------------------------------------
-*/
-function emailFunction(){
-	var r = document.createElement('span');
-	var y = document.createElement("INPUT");
-	y.setAttribute("type", "text");
-	y.setAttribute("placeholder", "Email");
-	var g = document.createElement("IMG");
-	g.setAttribute("src", "delete.png");
-	increment();
-	y.setAttribute("Name", "textelement_" + i);
-	r.appendChild(y);
-	g.setAttribute("onclick", "removeElement('myForm','id_" + i + "')");
-	r.appendChild(g);
-	r.setAttribute("id", "id_" + i);
-	document.getElementById("myForm").appendChild(r);
-}
-/*
------------------------------------------------------------------------------
-
-Functions that will be called upon, when user click on the Contact text field.
-
-------------------------------------------------------------------------------
-*/
-function contactFunction(){
-	var r = document.createElement('span');
-	var y = document.createElement("INPUT");
-	y.setAttribute("type", "text");
-	y.setAttribute("placeholder", "Contact");
-	var g = document.createElement("IMG");
-	g.setAttribute("src", "delete.png");
-	increment();
-	y.setAttribute("Name", "textelement_" + i);
-	r.appendChild(y);
-	g.setAttribute("onclick", "removeElement('myForm','id_" + i + "')");
-	r.appendChild(g);
-	r.setAttribute("id", "id_" + i);
-	document.getElementById("myForm").appendChild(r);
-}
-/*
------------------------------------------------------------------------------
-
-Functions that will be called upon, when user click on the Message textarea field.
-
-------------------------------------------------------------------------------
-*/
-function textareaFunction(){
-	var r = document.createElement('span');
-	var y = document.createElement("TEXTAREA");
-	var g = document.createElement("IMG");
-	y.setAttribute("cols", "17");
-	y.setAttribute("placeholder", "message..");
-	g.setAttribute("src", "delete.png");
-	increment();
-	y.setAttribute("Name", "textelement_" + i);
-	r.appendChild(y);
-	g.setAttribute("onclick", "removeElement('myForm','id_" + i + "')");
-	r.appendChild(g);
-	r.setAttribute("id", "id_" + i);
-	document.getElementById("myForm").appendChild(r);
+	document.getElementById("node_input").appendChild(r);
 }
 /*
 -----------------------------------------------------------------------------
@@ -138,5 +69,5 @@ Functions that will be called upon, when user click on the Reset Button.
 ------------------------------------------------------------------------------
 */
 function resetElements(){
-	document.getElementById('myForm').innerHTML = '';
+	document.getElementById('node_input').innerHTML = '';
 }

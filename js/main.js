@@ -8,20 +8,27 @@ function validate_nodes() {
 
 		var arr = parseStr.split(",");
 		for (var i = 0; i < arr.length; i++) {
-			var r = document.createElement('span');
 			var y = document.createElement("INPUT");
 			y.setAttribute("type", "text");
-			y.setAttribute("placeholder", "Name");
-			y.setAttribute("Name", "textelement_" + i);
-			r.appendChild(y);
-			r.setAttribute("id", "id_" + i);
+			y.setAttribute("placeholder", "d(" + arr[i] + ", 0)");
+			y.setAttribute("Name", "textelement_" + 2*i);
+			y.setAttribute("id", "id_" + 2*i);
+
+			var z = document.createElement("INPUT");
+			z.setAttribute("type", "text");
+			z.setAttribute("placeholder", "d(" + arr[i] + ", 1)");
+			z.setAttribute("Name", "textelement_" + 2*i+1);
+			z.setAttribute("id", "id_" + 2*i+1);
+
 
 			/**
 			 * JQuery conversion example
 			 */
-			var j = $(r);
+			var j = $(y);
+			var k = $(z);
 			// document.getElementById("node_input").appendChild(r);
 			$("#node_input").append(j);
+			$("#node_input").append(k);
 		};
 
 	}
@@ -36,7 +43,7 @@ function getNumNodes(input_string) {
 		var elem = arr[i];
 
 		if (elem.length != 1) {
-			console.log("Please only single letters.")
+			console.log("Please only single letters.");
 			return -1;
 		}
 	};

@@ -81,5 +81,9 @@ Functions that will be called upon, when user click on the Reset Button.
 ------------------------------------------------------------------------------
 */
 function resetElements(){
-	document.getElementById('node_input').innerHTML = '';
+	document.getElementById('node_input').innerHTML = '<form NAME="myform" ID="node_input" ACTION="" METHOD="POST">Enter nodes: <br>
+									<input TYPE="text" NAME="inputbox" VALUE=""><P><br>
+									<input TYPE="button" NAME="button" Value="Click" onClick="validate_nodes(this.form)"><br><br>
+									<input TYPE="reset" NAME="resetbutton" Value="Reset" onClick="resetElements()">
+								</form>';
 }

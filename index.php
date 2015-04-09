@@ -18,6 +18,7 @@ Released   : 20130517
 <title>Splendorousby TEMPLATED</title>
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700|Archivo+Narrow:400,700" rel="stylesheet" type="text/css">
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="scripts/functions.js"></script>
 </head>
 <body>
 <div id="menu-wrapper">

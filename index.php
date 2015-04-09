@@ -37,9 +37,9 @@
 							<li>
 								<form NAME="myform" ID="node_input" ACTION="" METHOD="POST">Enter nodes: <br>
 									<input TYPE="text" NAME="inputbox" VALUE=""><P><br>
-									<input TYPE="button" NAME="button" Value="Click" onClick="validate_nodes(this.form)">
+									<input TYPE="button" NAME="button" Value="Click" onClick="validate_nodes(this.form)"><br><br>
+									<input TYPE="reset" NAME="resetbutton" Value="Reset" onClick="resetElements()">
 								</form>
-
 							</li>
 						</ul>
 					</footer>

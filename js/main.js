@@ -21,16 +21,17 @@ function processNodes() {
 			oneTransition.setAttribute("placeholder", "𝛿(" + nodeArray[i] + ", 1)");
 			oneTransition.setAttribute("Name", "textelement_" + (2*i+1));
 			oneTransition.setAttribute("id", "transitition_input_id_" + (2*i+1));
-
+			// add text fields to DOM
 			$("#node_input").append($(zeroTransition));
 			$("#node_input").append($(oneTransition));
 		};
+		// add submit button to DOM
 		var submitButton = document.createElement("INPUT");
 		submitButton.setAttribute("type", "button");
 		submitButton.setAttribute("id", "submit_nfa_button");
 		submitButton.setAttribute("Value", "Transform");
 		submitButton.setAttribute("onClick", "transformNFA()");
-		// <input TYPE="button" NAME="button" ID="csn_button" Value="Click" onClick="processNodes(this.form)">
+		$("#node_input").append($(submitButton));
 	}
 	return true;
 }
@@ -52,6 +53,7 @@ function nodeInputValidator(input_string) {
 
 function resetElements() {
 	$('input[id*="transitition_input_id_"]').remove();
+	$("#submit_nfa_button").remove();
 	$("#csn_button").show();
 	$("#csn_text").val("");
 }

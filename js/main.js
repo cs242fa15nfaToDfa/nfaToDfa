@@ -1,7 +1,32 @@
 function validate_nodes() {
-	nameFunction();
 	console.log("Hello World!");
+
+	var parseStr = $("#comma_separated_nodes").val();
+	var numPairs = getNumNodes(parseStr);
+
+	if (numPairs > 0) {
+
+		var arr = parseStr.split(",");
+		for (var i = 0; i < arr.length; i++) {
+			var r = document.createElement('span');
+			var y = document.createElement("INPUT");
+			y.setAttribute("type", "text");
+			y.setAttribute("placeholder", "Name");
+			y.setAttribute("Name", "textelement_" + i);
+			r.appendChild(y);
+			r.setAttribute("id", "id_" + i);
+
+			/**
+			 * JQuery conversion example
+			 */
+			var j = $(r);
+			// document.getElementById("node_input").appendChild(r);
+			$("#node_input").append(j);
+		};
+
+	}
 	return true;
+
 }
 
 function getNumNodes(input_string) {
@@ -18,10 +43,6 @@ function getNumNodes(input_string) {
 	return arr.length;
 }
 
-var i = 0; /* Set Global Variable i */
-function increment(){
-i += 1; /* Function for automatic increment of field's "Name" attribute. */
-}
 /*
 ---------------------------------------------
 
@@ -43,24 +64,7 @@ function removeElement(parentDiv, childDiv){
 		return false;
 	}
 }
-/*
-----------------------------------------------------------------------------
 
-Functions that will be called upon, when user click on the Name text field.
-
-----------------------------------------------------------------------------
-*/
-function nameFunction(){
-	var r = document.createElement('span');
-	var y = document.createElement("INPUT");
-	y.setAttribute("type", "text");
-	y.setAttribute("placeholder", "Name");
-	increment();
-	y.setAttribute("Name", "textelement_" + i);
-	r.appendChild(y);
-	r.setAttribute("id", "id_" + i);
-	document.getElementById("node_input").appendChild(r);
-}
 /*
 -----------------------------------------------------------------------------
 

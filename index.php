@@ -30,15 +30,20 @@
 			<section id="two" class="wrapper style2 special">
 				<div class="container">
 					<header class="major">
-						<h2>hello</h2>
+						<h2>NFA to DFA</h2>
 					</header>
 					<footer>
 						<ul class="actions">
 							<li>
 								<form NAME="myform" ID="node_input" ACTION="" METHOD="POST">Enter nodes: <br>
+
 									<input TYPE="text" NAME="inputbox" VALUE=""><P><br>
 									<input TYPE="button" NAME="button" Value="Click" onClick="validate_nodes(this.form)"><br><br>
 									<input TYPE="reset" NAME="resetbutton" Value="Reset" onClick="resetElements()">
+
+									<input TYPE="text" NAME="inputbox" ID="comma_separated_nodes" VALUE=""><P><br>
+									<input TYPE="button" NAME="button" Value="Click" onClick="validate_nodes(this.form)">
+
 								</form>
 							</li>
 						</ul>

@@ -1,8 +1,3 @@
-// global to hold the states
-var stateArray;
-var transitionArray;
-
-
 var State = function(name) { 
 	this.name = name;
 	this.adjacencyList = {}
@@ -49,7 +44,7 @@ function stateTransInputValidator(inputString) {
  */
 function getStates(id) {
 	var inputStates = (id).val().replace(/ /g,'').toUpperCase();
-	$(id).val(inputStates);
+	$("#"+id).val(inputStates);
 
 	var numStates = stateTransInputValidator(inputStates);
 	if (numStates > -1) {
@@ -58,16 +53,16 @@ function getStates(id) {
 	} else {
 		return null;
 	}
-
 };
 
 /**
  * Gives back an array of the transitions as specified by the 
- * @return {[type]} [description]
+ * @return {array} 				array of strings with transition names
  */
 function getTransitions() {
+	// remove spaces and to lowercase
 	var inputTransitions = $("#csn_transitions").val().replace(/ /g, '').toLowerCase();
-	$("#csn_transitions").val(inputTransitions);
+	$("#csn_transitions").val(inputTransitions); // update the field
 
 	var numTrans = stateTransInputValidator(inputTransitions);
 
@@ -80,15 +75,13 @@ function getTransitions() {
 }
 
 function processStates() {
-	// get rid of spaces
-
-	// validation step
-	var numPairs = stateTransInputValidator(inputStates);
-
+	var stateArray = getStates("csn_input");
+	var transitionArray = getTransitions();
 
 	if (numPairs > 0) {
 		$("#csn_button").hide();
-		stateArray = inputStates.split(",");
+		$("csn_input").prop("disabled", true);
+		$("csn_transitions").prop("disabled", true);
 		
 		for (var i = 0; i < stateArray.length; i++) {
 			for(var j = 0; j < transitionArray.length; j++) {
@@ -98,7 +91,7 @@ function processStates() {
 				var transition = $(document.createElement("INPUT"));
 				transition.attr({
 					"type"        : "text",
-					"placeholder" : "𝛿(" + stateArray[i] + "," + transitionArray[j] + ")",
+					"placeholder" : "?(" + stateArray[i] + "," + transitionArray[j] + ")",
 					"Name"        : "textelement_" + i + "-" + j,
 					"id"          : "transitition_input_id_" + i + "-" + j
 				});
@@ -120,13 +113,8 @@ function processStates() {
 		$("#state_input").append(submitButton);
 	}
 
-
-	$("csn_input").prop("disabled", true);
-	$("csn_transitions").prop("disabled", true);
 	return true;
 }
-
-
 
 function resetElements() {
 	$('input[id*="transitition_input_id_"]').remove();
@@ -206,5 +194,4 @@ function buildJSON(stateObjArray) {
 function outputDFA(response) {
 
 }
-
 

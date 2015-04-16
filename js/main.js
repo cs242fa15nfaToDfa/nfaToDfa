@@ -1,7 +1,7 @@
 var State = function(name) { 
 	this.name = name;
-	this.adjacencyList = {}
-
+	this.adjacencyList = {};
+	
 	this.setTransition = function(transition, toStates) {
 		this.adjacencyList[transition] = toStates;
 	}

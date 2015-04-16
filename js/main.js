@@ -2,36 +2,32 @@
 var nodeArray;
 
 function processNodes() {
+	//get rid of spaces
 	var input = $("#csn_text").val().replace(/ /g,'');
+	var inputTransitions = $("#csn_transitions").val().replace(/ /g, '');
 	// validation step
-	var numPairs = nodeInputValidator(input);
+	var numPairs = nodeInputValidator(input, inputTransitions);
 
 	if (numPairs > 0) {
 		$("#csn_button").hide();
 		nodeArray = input.split(",");
+		transitionArray = inputTransitions.split(",");
 		for (var i = 0; i < nodeArray.length; i++) {
+			for(var j = 0; j < transitionArray.length; j++) {
 			// using document.createElement is faster than jQuery's creation
 
-			// create element for input field for d(A,0)
-			var zeroTransition = $(document.createElement("INPUT"));
-			zeroTransition.attr({
+			// create element for input field for d(node i, transition j)
+			var transition = $(document.createElement("INPUT"));
+			transition.attr({
 				"type" : "text",
-				"placeholder" : "𝛿(" + nodeArray[i] + ", 0)",
-				"Name" : "textelement_" + (2*i),
-				"id" : "transitition_input_id_" + (2*i)
+				"placeholder" : "𝛿(" + nodeArray[i] + "," + transitionArray[j] + ")",
+				"Name" : "textelement_" + nodeArray[i] + transitionArray[j],
+				"id" : "transitition_input_id_" + nodeArray[i] + transitionArray[j]
 			});
 
-			// create element for input for d(A, 1)
-			var oneTransition = $(document.createElement("INPUT"));
-			oneTransition.attr({
-				"type" : "text",
-				"placeholder" : "𝛿(" + nodeArray[i] + ", 1)",
-				"Name" : "textelement_" + (2*i+1),
-				"id" : "transitition_input_id_" + (2*i+1)
-			});
 			// add text fields to DOM
-			$("#node_input").append(zeroTransition);
-			$("#node_input").append(oneTransition);
+			$("#node_input").append(transition);
+			};
 		};
 		// add submit button to DOM
 		var submitButton = $(document.createElement("INPUT"));
@@ -47,27 +43,50 @@ function processNodes() {
 	return true;
 }
 
-function nodeInputValidator(inputString) {
+function nodeInputValidator(inputString, inputTransitions) {
 
 	inputString = inputString.toUpperCase();
 	var arr = inputString.split(",");
-
 	var duplicateMap = {};
+
+
 
 	for (var i = 0; i < arr.length; i++) {
 		var elem = arr[i];
 		// check against multi-letter node names
 		if (elem.length != 1) {
-			console.log("Please only single letters.");
+			console.log("Please only single character nodes.");
 			return -1;
 		}
 
 		if (duplicateMap[elem]) {
-			console.log("Please no duplicates.")
+			console.log("Please no duplicate inputs.")
 			return -1;
 		}
 		duplicateMap[elem] = true;
 	};
+
+
+	inputTransitions = inputTransitions.toUpperCase();
+	var transitionArr = inputTransitions.split(",");
+	var duplicateTransitionMap = {};
+
+	for(var j = 0; j < transitionArr.length; j++) {
+		var elem = transitionArr[j];
+		//check against multi-letter node names
+		if (elem.length != 1) {
+			console.log("Please only single character transitions.");
+			return -1;
+		}
+
+		if(duplicateTransitionMap[elem]) {
+			console.log("Please no duplicate transitions.");
+			return -1;
+		}
+		duplicateTransitionMap[elem] = true;
+	};
+
+
 	return arr.length;
 }
 

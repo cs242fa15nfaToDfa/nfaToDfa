@@ -116,3 +116,15 @@ function transformNFA() {
 
 	// ajax request to servers
 }
+
+
+
+
+
+function buildJSON() {
+
+	
+
+
+
+}

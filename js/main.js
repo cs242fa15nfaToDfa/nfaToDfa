@@ -162,7 +162,7 @@ function transformNFA() {
  * function used to build the JSON file that will be sent to the server
  * @return {[type]}
  */
-function buildJSON() {
+function buildJSON(stateObjArray) {
 
 	var JSONarr = {
 		nodes: []
@@ -173,17 +173,19 @@ function buildJSON() {
 	for(var i = 0; i < stateArray.length; i++) {
 
 		var stateJSON = {
-			name: stateArray[i].name;
-			transitions: {}
+			name        : stateArray[i].name;
+			transitions : {}
 		};
 
-		for (var i = 0; i < transitionArray.length; i++) {
-			stateJSON.transitions[transitionArray[i]] = [];
+		for (var j = 0; j < transitionArray.length; j++) {
+			stateJSON.transitions[transitionArray[j]] = [];
 		}
 
-		
+		$.each(stateObjArray[i].adjacencyList, function(i,v){
+			stateJSON.transitions[i] = v;
+		});
 
-
+		JSONarr.nodes.append(stateJSON);
 	}
 
 

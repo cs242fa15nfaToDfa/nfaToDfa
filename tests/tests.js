@@ -17,6 +17,7 @@ QUnit.test( "testSetTransitionFunction", function ( assert ) {
 	testState.setTransition("n", transitionStates);
 	console.log(testState.adjacencyList["n"]);
 	assert.equal(testState.adjacencyList["n"][0],"i", true);
+	assert.equal(testState.adjacencyList["n"][1],"j", true)
 });
 
 
@@ -29,6 +30,8 @@ QUnit.test( "testGetStatesEmpty", function ( assert ) {
 QUnit.test( "testGetStates", function ( assert ){
 	var testResult = getStates("i,j,k");
 	assert.equal(testResult[0],"i", true);
+	assert.equal(testResult[1],"j", true);
+	assert.equal(testResult[2],"k", true);
 });
 
 QUnit.test( "testBuildJSON", function ( assert ){

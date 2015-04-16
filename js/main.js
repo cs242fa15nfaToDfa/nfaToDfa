@@ -1,9 +1,10 @@
-var State = function(name) { 
-	this.name = name;
-	this.adjacencyList = {};
+var State = function(name) {
+	var self = this; 
+	self.name = name;
+	self.adjacencyList = {};
 	
 	this.setTransition = function(transition, toStates) {
-		this.adjacencyList[transition] = toStates;
+		self.adjacencyList[transition] = toStates;
 	}
 };
 
@@ -145,6 +146,9 @@ function resetElements() {
 }
 
 function generateStateObjects(stateNames, transitions) {
+	console.log(stateNames);
+	console.log(transitions);
+
 	var objects = [];
 
 	for (var i = 0; i < stateNames.length; i++) {
@@ -153,12 +157,12 @@ function generateStateObjects(stateNames, transitions) {
 		// build up the adjacency list
 		for (var j = 0; j < transitions.length; j++) {
 			var id = "#transitition_input_id_" + i + "-" + j;
+			console.log("processing id", id)
 			var toStatesInput = $(id).val();
 
-			if (stateTransInputValidator(toStatesInput) > -1) {
-				var toStates = getStates(id);
-				state.setTransition(transitions[i], toStates);
-			}
+			var toStatesString = getStatesString(id);
+			var toStates = getStates(toStatesString);
+			state.setTransition(transitions[j], toStates);
 		};
 
 		objects.push(state);
@@ -176,15 +180,12 @@ function transformNFA() {
 	var transitionsToStates = [];
 	$('input[id*="transitition_input_id_"]').each(function(i,v) {
 		var value = $(v).val();
-		console.log(value);
 
 		var validate = stateTransInputValidator(value);
 		if (validate == -1) {
 			console.log("Validation failed at text box " + i);
 			return -1;
 		}
-
-
 	});
 
 	// process input

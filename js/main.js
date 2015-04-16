@@ -136,10 +136,33 @@ function transformNFA() {
 
 
 
-
+/**
+ * function used to build the JSON file that will be sent to the server
+ * @return {[type]}
+ */
 function buildJSON() {
 
+	var JSONarr = {
+		nodes: []
+	};
 	
+	var stateArray = getStates("csn_states");
+	var transitionArray = getTransitions("csn_transitions");
+	for(var i = 0; i < stateArray.length; i++) {
+
+		var stateJSON = {
+			name: stateArray[i].name;
+			transitions: {}
+		};
+
+		for (var i = 0; i < transitionArray.length; i++) {
+			stateJSON.transitions[transitionArray[i]] = [];
+		}
+
+		
+
+
+	}
 
 
 

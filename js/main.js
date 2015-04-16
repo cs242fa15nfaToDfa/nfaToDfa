@@ -149,18 +149,26 @@ function transformNFA() {
 		}
 	});
 	// process input
+	var stateObjArray = [];
 
 	// build json
+	var dataJSON = buildJSON(stateObjArray);
 
 	// ajax request to servers
+	$.ajax({
+		url  : "app/transform.php",
+		data : data
+	}).done(function(response){
+		outputDFA(response);
+	});
 }
 
 
 
 
 /**
- * function used to build the JSON file that will be sent to the server
- * @return {[type]}
+ * function used to build the JSON that will be sent to the server
+ * @return JSON 
  */
 function buildJSON(stateObjArray) {
 
@@ -188,6 +196,15 @@ function buildJSON(stateObjArray) {
 		JSONarr.nodes.append(stateJSON);
 	}
 
-
+	return JSONarr;
 
 }
+
+
+
+
+function outputDFA(response) {
+
+}
+
+

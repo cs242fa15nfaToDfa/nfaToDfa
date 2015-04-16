@@ -29,4 +29,11 @@ QUnit.test( "testGetStatesEmpty", function ( assert ) {
 QUnit.test( "testGetStates", function ( assert ){
 	var testResult = getStates("i,j,k");
 	assert.equal(testResult[0] == "i" && testResult[1] == "j" && testResult[2] == "k", true);
-})
+});
+
+QUnit.test( "testBuildJSON", function ( assert ){
+	var testState = new State("test");
+	var testArray = [testState];
+	var testJSONArr = buildJSON(testArray);
+	assert.equal(testJSONArr.nodes[0].name == "test", true);
+});

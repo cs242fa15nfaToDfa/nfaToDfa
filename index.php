@@ -35,11 +35,11 @@
 					<footer>
 						<ul class="actions">
 							<li>
-								Enter nodes and transitions:
-								<form NAME="myform" ID="node_input" ACTION="" METHOD="GET">
-									<input TYPE="text" NAME="inputbox" ID="csn_text" VALUE="" placeholder="Nodes">
+								Enter states and transitions:
+								<form NAME="myform" ID="state_input" ACTION="" METHOD="GET">
+									<input TYPE="text" NAME="inputbox" ID="csn_text" VALUE="" placeholder="States">
 									<input TYPE="text" NAME="inputtransitionbox" ID="csn_transitions" VALUE="" placeholder="Transitions">
-									<input TYPE="button" CLASS="special" NAME="button" ID="csn_button" Value="Process" onClick="processNodes()">
+									<input TYPE="button" CLASS="special" NAME="button" ID="csn_button" Value="Process" onClick="processStates()">
 									<input TYPE="button" CLASS="special" NAME="resetbutton" Value="Reset" onClick="resetElements()">
 								</form>
 							</li>

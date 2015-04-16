@@ -1,9 +1,6 @@
 var State = function(name) { 
 	this.name = name;
 	this.adjacencyList = {}
-	for (var i = 0; i < transitionArray.length; i++) {
-		adjacencyList[transitionArray[i]] = [];
-	};
 
 	this.setTransition = function(transition, toStates) {
 		this.adjacencyList[transition] = toStates;
@@ -16,7 +13,13 @@ var State = function(name) {
  * @return {integer}                 number of states/elements in string, -1 if fail
  */
 function stateTransInputValidator(inputString) {
-	var arr = inputString.split(",");
+	var arr;
+	if (inputString == "") {
+		arr = [];
+	} else {
+		arr = inputString.split(",");
+	}
+
 	var duplicateMap = {};
 
 	for (var i = 0; i < arr.length; i++) {
@@ -43,13 +46,20 @@ function stateTransInputValidator(inputString) {
  * @return {array}              array of strings with state names   
  */
 function getStates(id) {
-	var inputStates = (id).val().replace(/ /g,'').toUpperCase();
-	$("#"+id).val(inputStates);
+	var inputStates = $(id).val().replace(/ /g,'').toUpperCase();
+	$(id).val(inputStates);
 
 	var numStates = stateTransInputValidator(inputStates);
 	if (numStates > -1) {
-		var stateArray = inputStates.split(",");
-		return stateArray;
+		var stateArray;
+
+		if (numStates == 0) {
+			stateArray = [];
+		} else {
+			stateArray = inputStates.split(",");
+		}
+
+		return stateArray
 	} else {
 		return null;
 	}
@@ -75,43 +85,45 @@ function getTransitions() {
 }
 
 function processStates() {
-	var stateArray = getStates("csn_input");
+	var stateArray = getStates("#csn_states");
 	var transitionArray = getTransitions();
 
-	if (numPairs > 0) {
-		$("#csn_button").hide();
-		$("csn_input").prop("disabled", true);
-		$("csn_transitions").prop("disabled", true);
-		
-		for (var i = 0; i < stateArray.length; i++) {
-			for(var j = 0; j < transitionArray.length; j++) {
-				// using document.createElement is faster than jQuery's creation
-
-				// create element for input field for d(state i, transition j)
-				var transition = $(document.createElement("INPUT"));
-				transition.attr({
-					"type"        : "text",
-					"placeholder" : "?(" + stateArray[i] + "," + transitionArray[j] + ")",
-					"Name"        : "textelement_" + i + "-" + j,
-					"id"          : "transitition_input_id_" + i + "-" + j
-				});
-
-				// add text fields to DOM
-				$("#state_input").append(transition);
-			}
-		}
-
-		// add submit button to DOM
-		var submitButton = $(document.createElement("INPUT"));
-		submitButton.attr({
-			"type"    : "button",
-			"class"   : "special",
-			"id"      : "submit_nfa_button",
-			"Value"   : "Transform",
-			"onClick" : "transformNFA()"
-		});
-		$("#state_input").append(submitButton);
+	if (stateArray == null || transitionArray == null) {
+		return false;
 	}
+
+	$("#csn_button").hide();
+	$("#csn_states").prop("disabled", true);
+	$("#csn_transitions").prop("disabled", true);
+	
+	for (var i = 0; i < stateArray.length; i++) {
+		for(var j = 0; j < transitionArray.length; j++) {
+			// using document.createElement is faster than jQuery's creation
+
+			// create element for input field for d(state i, transition j)
+			var transition = $(document.createElement("INPUT"));
+			transition.attr({
+				"type"        : "text",
+				"placeholder" : "d(" + stateArray[i] + "," + transitionArray[j] + ")",
+				"Name"        : "textelement_" + i + "-" + j,
+				"id"          : "transitition_input_id_" + i + "-" + j
+			});
+
+			// add text fields to DOM
+			$("#state_input").append(transition);
+		}
+	}
+
+	// add submit button to DOM
+	var submitButton = $(document.createElement("INPUT"));
+	submitButton.attr({
+		"type"    : "button",
+		"class"   : "special",
+		"id"      : "submit_nfa_button",
+		"Value"   : "Transform",
+		"onClick" : "transformNFA()"
+	});
+	$("#state_input").append(submitButton);
 
 	return true;
 }
@@ -123,24 +135,55 @@ function resetElements() {
 	$("#csn_text").val("");
 }
 
+function generateStateObjects(stateNames, transitions) {
+	var objects = [];
+
+	for (var i = 0; i < stateNames.length; i++) {
+		var state = new State(stateNames[i]);
+
+		// build up the adjacency list
+		for (var j = 0; j < transitions.length; j++) {
+			var id = "#transitition_input_id_" + i + "-" + j;
+			var toStatesInput = $(id).val();
+
+			if (stateTransInputValidator(toStatesInput) > -1) {
+				var toStates = getStates(id);
+				state.setTransition(transitions[i], toStates);
+			}
+		};
+
+		objects.push(state);
+	};
+
+	return objects;
+}
+
 function transformNFA() {
-	var failedElement = -1;
 	// grab every input element
+	var stateNames = getStates("#csn_states");
+	var transitions = getTransitions();
+
+	var transitionsToStates = [];
 	$('input[id*="transitition_input_id_"]').each(function(i,v) {
 		var value = $(v).val();
 		console.log(value);
 
-		var validate = stateInputValidator(value);
+		var validate = stateTransInputValidator(value);
 		if (validate == -1) {
 			console.log("Validation failed at text box " + i);
 			return -1;
 		}
+
+
 	});
+
 	// process input
-	var stateObjArray = [];
+	var stateObjArray = generateStateObjects(stateNames, transitions);
 
 	// build json
-	var dataJSON = buildJSON(stateObjArray);
+	var data = buildJSON(stateObjArray);
+
+	console.log(data);
 
 	// ajax request to servers
 	$.ajax({
@@ -159,33 +202,11 @@ function transformNFA() {
  * @return JSON 
  */
 function buildJSON(stateObjArray) {
-
 	var JSONarr = {
-		nodes: []
+		nodes: stateObjArray
 	};
 	
-	var stateArray = getStates("csn_states");
-	var transitionArray = getTransitions("csn_transitions");
-	for(var i = 0; i < stateArray.length; i++) {
-
-		var stateJSON = {
-			name        : stateArray[i].name;
-			transitions : {}
-		};
-
-		for (var j = 0; j < transitionArray.length; j++) {
-			stateJSON.transitions[transitionArray[j]] = [];
-		}
-
-		$.each(stateObjArray[i].adjacencyList, function(i,v){
-			stateJSON.transitions[i] = v;
-		});
-
-		JSONarr.nodes.append(stateJSON);
-	}
-
 	return JSONarr;
-
 }
 
 

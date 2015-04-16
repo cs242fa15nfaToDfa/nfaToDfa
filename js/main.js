@@ -1,10 +1,7 @@
 var State = function(name) { 
 	this.name = name;
-	this.adjacencyList = {}
-	for (var i = 0; i < transitionArray.length; i++) {
-		adjacencyList[transitionArray[i]] = [];
-	};
-
+	this.adjacencyList = {};
+	
 	this.setTransition = function(transition, toStates) {
 		this.adjacencyList[transition] = toStates;
 	}
@@ -169,7 +166,7 @@ function buildJSON(stateObjArray) {
 	for(var i = 0; i < stateArray.length; i++) {
 
 		var stateJSON = {
-			name        : stateArray[i].name;
+			name        : stateArray[i].name,
 			transitions : {}
 		};
 

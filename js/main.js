@@ -41,29 +41,37 @@ function stateTransInputValidator(inputString) {
 }
 
 /**
- * Gives back an array of states from a field in the HTML
- * @param  {string} id          HTML descriptor of the 
- * @return {array}              array of strings with state names   
+ * Wrapper to get string from the DOM
+ * @param  {string} id          HTML descriptor of the text field
+ * @return {string}             Adapted string from the text field  
  */
-function getStates(id) {
+function getStatesString(id) {
 	var inputStates = $(id).val().replace(/ /g,'').toUpperCase();
 	$(id).val(inputStates);
+	return inputStates;
+};
 
-	var numStates = stateTransInputValidator(inputStates);
+/**
+ * Gives back an array of states from a string retrieved by getStatesString()
+ * @param  {string} statesString          comma separated, no space, uppercase string of states
+ * @return {array}                        array of strings with state names   
+ */
+function getStates(statesString) {
+	var numStates = stateTransInputValidator(statesString);
 	if (numStates > -1) {
 		var stateArray;
 
 		if (numStates == 0) {
 			stateArray = [];
 		} else {
-			stateArray = inputStates.split(",");
+			stateArray = statesString.split(",");
 		}
 
 		return stateArray
 	} else {
 		return null;
 	}
-};
+}
 
 /**
  * Gives back an array of the transitions as specified by the 
@@ -85,7 +93,8 @@ function getTransitions() {
 }
 
 function processStates() {
-	var stateArray = getStates("#csn_states");
+	var statesString = getStatesString("#csn_states");
+	var stateArray = getStates(statesString);
 	var transitionArray = getTransitions();
 
 	if (stateArray == null || transitionArray == null) {
@@ -160,7 +169,8 @@ function generateStateObjects(stateNames, transitions) {
 
 function transformNFA() {
 	// grab every input element
-	var stateNames = getStates("#csn_states");
+	var statesString = getStatesString("#csn_states");
+	var stateArray = getStates(statesString);
 	var transitions = getTransitions();
 
 	var transitionsToStates = [];
@@ -178,7 +188,7 @@ function transformNFA() {
 	});
 
 	// process input
-	var stateObjArray = generateStateObjects(stateNames, transitions);
+	var stateObjArray = generateStateObjects(stateArray, transitions);
 
 	// build json
 	var data = buildJSON(stateObjArray);

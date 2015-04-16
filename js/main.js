@@ -145,6 +145,15 @@ function resetElements() {
 	$("#csn_text").val("");
 }
 
+/**
+ * 
+ * @return {[type]} [description]
+ */
+function processTransitionsInput() {
+
+}
+
+
 function generateStateObjects(stateNames, transitions) {
 	console.log(stateNames);
 	console.log(transitions);

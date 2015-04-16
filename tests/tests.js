@@ -18,3 +18,15 @@ QUnit.test( "testSetTransitionFunction", function ( assert ) {
 	console.log(testState.adjacencyList["n"]);
 	assert.equal(testState.adjacencyList["n"][0] == "i" && testState.adjacencyList["n"][1] == "j", true);
 });
+
+
+QUnit.test( "testGetStatesEmpty", function ( assert ) {
+	var testResult = getStates("");
+	assert.equal(testResult.length == 0, true);
+});
+
+
+QUnit.test( "testGetStates", function ( assert ){
+	var testResult = getStates("i,j,k");
+	assert.equal(testResult[0] == "i" && testResult[1] == "j" && testResult[2] == "k", true);
+})

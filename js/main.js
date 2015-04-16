@@ -7,7 +7,7 @@ var State = function(name) {
 	this.name = name;
 	this.adjacencyList = {}
 	for (var i = 0; i < transitionArray.length; i++) {
-		adjacencyList[transitionArray[i]] = null;
+		adjacencyList[transitionArray[i]] = [];
 	};
 
 	this.setTransition = function(transition, toStates) {
@@ -17,8 +17,8 @@ var State = function(name) {
 
 /**
  * Takes an input of either a string of states or transitions and gives their count
- * @param  {[type]} inputString      string captured from HTML
- * @return {[integer]}               number of states/elements in string, -1 if fail
+ * @param  {string} inputString      string captured from HTML
+ * @return {integer}                 number of states/elements in string, -1 if fail
  */
 function stateTransInputValidator(inputString) {
 	var arr = inputString.split(",");
@@ -42,11 +42,29 @@ function stateTransInputValidator(inputString) {
 	return arr.length;
 }
 
+/**
+ * Gives back an array of states from a field in the HTML
+ * @param  {string} id          HTML descriptor of the 
+ * @return {array}              array of strings with state names   
+ */
 function getStates(id) {
 	var inputStates = (id).val().replace(/ /g,'').toUpperCase();
 	$(id).val(inputStates);
+
+	var numStates = stateTransInputValidator(inputStates);
+	if (numStates > -1) {
+		var stateArray = inputStates.split(",");
+		return stateArray;
+	} else {
+		return null;
+	}
+
 };
 
+/**
+ * Gives back an array of the transitions as specified by the 
+ * @return {[type]} [description]
+ */
 function getTransitions() {
 	var inputTransitions = $("#csn_transitions").val().replace(/ /g, '').toLowerCase();
 	$("#csn_transitions").val(inputTransitions);
@@ -55,7 +73,6 @@ function getTransitions() {
 
 	if (numTrans > 0) {
 		var transitionArray = inputTransitions.split(",");
-
 		return transitionArray;
 	} else {
 		return null;
@@ -80,27 +97,32 @@ function processStates() {
 				// create element for input field for d(state i, transition j)
 				var transition = $(document.createElement("INPUT"));
 				transition.attr({
-					"type" : "text",
+					"type"        : "text",
 					"placeholder" : "𝛿(" + stateArray[i] + "," + transitionArray[j] + ")",
-					"Name" : "textelement_" + stateArray[i] + "-" + transitionArray[j],
-					"id" : "transitition_input_id_" + stateArray[i] + "-" + transitionArray[j]
+					"Name"        : "textelement_" + i + "-" + j,
+					"id"          : "transitition_input_id_" + i + "-" + j
 				});
 
 				// add text fields to DOM
 				$("#state_input").append(transition);
-			};
-		};
+			}
+		}
+
 		// add submit button to DOM
 		var submitButton = $(document.createElement("INPUT"));
 		submitButton.attr({
-			"type" : "button",
-			"class" : "special",
-			"id" : "submit_nfa_button",
-			"Value" : "Transform",
+			"type"    : "button",
+			"class"   : "special",
+			"id"      : "submit_nfa_button",
+			"Value"   : "Transform",
 			"onClick" : "transformNFA()"
 		});
 		$("#state_input").append(submitButton);
 	}
+
+
+	$("csn_input").prop("disabled", true);
+	$("csn_transitions").prop("disabled", true);
 	return true;
 }
 

@@ -150,7 +150,17 @@ function resetElements() {
  * @return {[type]} [description]
  */
 function processTransitionsInput() {
+	var array = [];
 
+	var inputs = $('input[id*="transitition_input_id_"]');
+	var i = 0;
+
+	var inputSet = $('input[id*="transitition_input_id_' + i + '"]');
+	while (inputSet.size() > 0) {
+
+
+		i++;
+	}
 }
 
 

@@ -1,6 +1,7 @@
 QUnit.test( "testStateConstructor", function( assert ) {
 	var testState = new State("test");
 	assert.equal(testState.name, "test");
+	assert.deepEqual(testState.adjacencyList, {});
 });
 
 

@@ -138,11 +138,16 @@ function processStates() {
 	return true;
 }
 
+/**
+ * Clear out the fields and restore the site to normal
+ */
 function resetElements() {
 	$('input[id*="transitition_input_id_"]').remove();
 	$("#submit_nfa_button").remove();
 	$("#csn_button").show();
-	$("#csn_text").val("");
+	$("#csn_states").val("");
+	$("#csn_states").prop("disabled", false);
+	$("#csn_transitions").prop("disabled", false);
 }
 
 /**
@@ -217,8 +222,9 @@ function transformNFA() {
 
 	// ajax request to servers
 	$.ajax({
-		url  : "app/transform.php",
-		data : data
+		url    : "app/transform.php",
+		method : "POST",
+		data   : data
 	}).done(function(response){
 		outputDFA(response);
 	});
@@ -236,13 +242,13 @@ function buildJSON(stateObjArray) {
 		nodes: stateObjArray
 	};
 	
-	return JSONarr;
+	return JSON.stringify(JSONarr);
 }
 
 
 
 
 function outputDFA(response) {
-
+	console.log(response);
 }
 

@@ -1,5 +1,6 @@
 <?php
 	require("state.php");
+	require("json.php");
 	error_reporting (E_ALL); 
 
 	$json = file_get_contents('php://input');

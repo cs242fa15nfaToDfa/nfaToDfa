@@ -7,7 +7,7 @@
 	 * @return [type]       [description]
 	 */
 	function jsonToStateArray($obj){
-//print_r($obj);
+
 		$array = array();
 
 		foreach($obj->nodes as $state){
@@ -20,8 +20,6 @@
 
 			$array[$state->name] = $newState;
 		}
-
-// print_r($array);
 
 		return $array;
 
@@ -40,10 +38,5 @@
 		return $array;
 
 	}
-
-
-
-
-
 
 ?>

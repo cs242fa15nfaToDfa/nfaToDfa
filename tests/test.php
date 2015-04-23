@@ -39,33 +39,17 @@ class StateTest extends PHPUnit_Framework_TestCase
         $cState->setTransition("b", array("A", "B"));
 
         // can't do assert contains on an array of objects apparently
-        $this->assertEquals($aState, $result[0]);
-        $this->assertEquals($bState, $result[1]);
-        $this->assertEquals($cState, $result[2]);
+        $this->assertEquals($aState, $result["A"]);
+        $this->assertEquals($bState, $result["B"]);
+        $this->assertEquals($cState, $result["C"]);
     }
 
 
     public function testTransformToDFA(){
-        
-        $nfaStates = array();
-        $transitions = array("0", "1");
-
-        $aState = new State("A");
-        $aState->setTransition("0", array("A","B"));
-        $aState->setTransition("1", array("C"));
-        $nfaStates[] = $aState;
-
-
-        $bState = new State("B");
-        $bState->setTransition("0", array("C"));
-        $bState->setTransition("1", []);
-        $nfaStates[] = $bState;
-
-        
-        $cState = new State("C");
-        $cState->setTransition("0", []);
-        $cState->setTransition("1", array("B", "C"));
-        $nfaStates[] = $cState;
+        $json = '{"nodes":[{"name":"A","adjacencyList":{"0":["A","B"],"1":["C"]}},{"name":"B","adjacencyList":{"0":["C"],"1":[]}},{"name":"C","adjacencyList":{"0":[],"1":["B","C"]}}]}';
+        $input = json_decode($json);
+        $nfaStates = jsonToStateArray($input);
+        $transitions = getTransitions($input);
 
         $output = transformToDfa($nfaStates, $transitions);
 

@@ -30,28 +30,6 @@
 	}
 
 	/**
-	 * Returns the transitions of the object
-	 * @param  [type] $obj deserialized json
-	 * @return array  of the possible transitions
-	 */
-	function getTransitions($obj){
-
-		$array = array();
-
-		//just need one state, since it has all the transitions
-		$a = $obj->nodes[0];
-
-		//loop through the adjacency list, and add the transition 
-		foreach ($a->adjacencyList as $key => $value) {
-			$array[] = $key;
-		}
-
-		//return the list of transitions
-		return $array;
-
-	}
-
-	/**
 	 * serializes the json to be sent back to the server 
 	 * @param  array $states contains the DFA states
 	 * @return json formatted list of DFA states   

@@ -20,7 +20,12 @@
 			$this->adjacencyList[$transition] = $toStates;
 		}
 	}
-
+	/**
+	 * Given array of node names returns the power set of the nodes
+	 * ex. [A, B] -> [[], [A], [B], [A,B]]
+	 * @param  array  $array Array of node names
+	 * @return array         Array of array of node names
+	 */
 	function powerSet($array) {
 		$powerSet = [];
 		$powerSet[] = [];

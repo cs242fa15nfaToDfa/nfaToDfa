@@ -28,6 +28,20 @@
 	}
 
 
+	function getTransitions($obj){
+
+		$array = array();
+
+		$a = $obj->nodes[0];
+		foreach ($a->adjacencyList as $key => $value) {
+			$array[] = $key;
+		}
+
+		return $array;
+
+	}
+
+
 
 
 

@@ -6,6 +6,7 @@
 	$json = file_get_contents('php://input');
 	$obj = json_decode($json);
 	$nfaStates = jsonToStateArray($obj);
+	$transitions = getTransitions($obj);
 	
 	$nodeNames = [];
 
@@ -24,5 +25,5 @@
 
 	$input = array($a, $b, $c);
 
-	transformToDfa($input);
+	transformToDfa($nfaStates, $transitions);
 ?>

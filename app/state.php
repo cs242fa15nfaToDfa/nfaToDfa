@@ -21,6 +21,15 @@
 		}
 	}
 
+	class DFAState extends State
+	{
+		public $substates;
+
+		function setSubstates($substates) {
+			$this->substates = $substates;
+		}
+	}
+
 	/**
 	 * Given array of node names returns the power set of the nodes
 	 * ex. [A, B] -> [[], [A], [B], [A,B]]
@@ -48,7 +57,7 @@
 	 * @param  array $nfaStates array of States of an NFA
 	 * @return array            array of States of a DFA, state names will be stringified
 	 */
-	function transformToDfa($nfaStates) {
+	function transformToDfa($nfaStates, $transitions) {
 		$dfaStates = [];
 
 		$stateNames = [];
@@ -58,15 +67,42 @@
 		$powerSet = powerSet($stateNames);
 
 		foreach ($powerSet as $subset) {
+			sort($subset);
 			$name = implode($subset);
 			if ($name == "") {
 				$name = "@";
 			}
-			$dfaStates[] = new State($name);
+			$d = new DFAState($name);
+			$d->setSubstates($subset);
+			$dfaStates[$name] = $d;
 		}
 
-		print_r($dfaStates);
-		// here be magic
+		foreach($dfaStates as $dfaState) {
+			foreach($transitions as $transition) {
+				
+				$collector = [];
+
+				foreach ($dfaState->substates as $substateName) {
+
+					$nfaState = $nfaStates[$substateName];
+
+
+					$toStates = $nfaState->adjacencyList[$transition];
+
+					$collector = array_unique(array_merge($collector, $toStates));
+				}
+				sort($collector);
+
+				$toState = implode($collector);
+				if ($toState == "") {
+					$toState = "@";
+				}
+
+				$dfaState->setTransition($transition, $toState);
+
+			}
+		}
+
 		return $dfaStates;
 	}
 ?>

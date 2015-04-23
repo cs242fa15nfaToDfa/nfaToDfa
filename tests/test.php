@@ -23,7 +23,7 @@ class StateTest extends PHPUnit_Framework_TestCase
 
         $obj = json_decode($json);
 
-        $result = jsonToStateArray($obj->nodes);
+        $result = jsonToStateArray($obj->states);
 
 
         $aState = new NFAState("A");
@@ -50,7 +50,7 @@ class StateTest extends PHPUnit_Framework_TestCase
         $obj = json_decode($json);
         $stateNames = $obj->stateNames;
         $transitions = $obj->transitions;
-        $nfaStates = jsonToStateArray($obj->nodes);
+        $nfaStates = jsonToStateArray($obj->objStates);
 
         $output = transformToDfa($stateNames, $transitions, $nfaStates  );
 

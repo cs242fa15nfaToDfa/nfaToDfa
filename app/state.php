@@ -63,6 +63,19 @@
 
 	    return $powerSet;
 	}
+ 	
+ 	/**
+ 	 * Takes an array of NFAState names and spits out a DFAState name, made to get rid of duplicate code
+ 	 * @param  array  $nfaStateNames Array of component NFA substate names, i.e. [A,B,D] or []
+ 	 * @return string                equivalent DFAState name, i.e. ABD or @
+ 	 */
+	function generateDFAStateName($nfaStateNames) {
+		$name = implode($nfaStateNames);
+		if ($name == "") {
+			$name = "@"; // chosen @ to be the null state (rejecting)
+		}
+		return $name;
+	}
 
 	/**
 	 * Main logic of the server, performs the NFA to DFA conversion via subset transformation
@@ -74,38 +87,41 @@
 	function transformToDfa($stateNames, $transitions, $nfaStates) {
 		$dfaStates = [];
 
+		// generate an array of blank DFAStates based on the power set of the NFA States
 		$powerSet = powerSet($stateNames);
-
 		foreach ($powerSet as $subset) {
-			$name = implode($subset);
-			if ($name == "") {
-				$name = "@";
-			}
+			$name = generateDFAStateName($subset);
 			$d = new DFAState($name);
 			$d->setSubstates($subset);
 			$dfaStates[$name] = $d;
 		}
 
+		/**
+		 * Take a DFAState and merge all of the states in the transition sets of its
+		 * component substates
+		 *
+		 * For instance, let NFAStates:
+		 * A where d(A, 0) = [B]
+		 * B where d(B, 0) = [A]
+		 *
+		 * then for DFAState:
+		 * AB, we need d(AB, 0) = AB
+		 */
 		foreach($dfaStates as $dfaState) {
 			foreach($transitions as $transition) {
-				
-				$collector = [];
+				$collector = []; // will hold the set of destination states
 
 				foreach ($dfaState->substates as $substateName) {
-
-					$nfaState = $nfaStates[$substateName];
-
-
+					$nfaState = $nfaStates[$substateName]; // get access to the NFA object by name
 					$toStates = $nfaState->adjacencyList[$transition];
-
+					// merge the states in the adjacencyLists of all the component NFA states
+					// use array_unique to weed out duplicates
 					$collector = array_unique(array_merge($collector, $toStates));
 				}
+				
+				// need to call sort so that the DFAState names are consistent, i.e. BA vs. AB
 				sort($collector);
-
-				$toState = implode($collector);
-				if ($toState == "") {
-					$toState = "@";
-				}
+				$toState = generateDFAStateName($collector);
 
 				$dfaState->setTransition($transition, $toState);
 

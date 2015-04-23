@@ -48,10 +48,11 @@ class StateTest extends PHPUnit_Framework_TestCase
     public function testTransformToDFA(){
         $json = '{"nodes":[{"name":"A","adjacencyList":{"0":["A","B"],"1":["C"]}},{"name":"B","adjacencyList":{"0":["C"],"1":[]}},{"name":"C","adjacencyList":{"0":[],"1":["B","C"]}}]}';
         $input = json_decode($json);
-        $nfaStates = jsonToStateArray($input);
-        $transitions = getTransitions($input);
+        $stateNames = $obj->stateNames;
+        $transitions = $obj->transitions;
+        $nfaStates = jsonToStateArray($obj->states);
 
-        $output = transformToDfa($nfaStates, $transitions);
+        $output = transformToDfa($stateNames, $transitions, $nfaStates);
 
         $this->assertEquals("ABC", $output["ABC"]->adjacencyList["0"]);
         $this->assertEquals("BC", $output["ABC"]->adjacencyList["1"]);

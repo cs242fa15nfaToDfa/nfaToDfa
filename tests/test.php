@@ -21,9 +21,9 @@ class StateTest extends PHPUnit_Framework_TestCase
         // require("app/state.php");
         $json = '{"nodes":[{"name":"A","adjacencyList":{"a":["B","C"],"b":[]}},{"name":"B","adjacencyList":{"a":["A"],"b":["B"]}},{"name":"C","adjacencyList":{"a":[],"b":["A","B"]}}]}';
 
-        $input = json_decode($json);
+        $obj = json_decode($json);
 
-        $result = jsonToStateArray($input);
+        $result = jsonToStateArray($obj->nodes);
 
 
         $aState = new NFAState("A");
@@ -47,10 +47,10 @@ class StateTest extends PHPUnit_Framework_TestCase
 
     public function testTransformToDFA(){
         $json = '{"nodes":[{"name":"A","adjacencyList":{"0":["A","B"],"1":["C"]}},{"name":"B","adjacencyList":{"0":["C"],"1":[]}},{"name":"C","adjacencyList":{"0":[],"1":["B","C"]}}]}';
-        $input = json_decode($json);
+        $obj = json_decode($json);
         $stateNames = $obj->stateNames;
         $transitions = $obj->transitions;
-        $nfaStates = jsonToStateArray($obj->states);
+        $nfaStates = jsonToStateArray($obj->nodes);
 
         $output = transformToDfa($stateNames, $transitions, $nfaStates  );
 

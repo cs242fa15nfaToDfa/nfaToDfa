@@ -57,13 +57,9 @@
 	 * @param  array $nfaStates array of States of an NFA
 	 * @return array            array of States of a DFA, state names will be stringified
 	 */
-	function transformToDfa($nfaStates, $transitions) {
+	function transformToDfa($stateNames, $transitions, $nfaStates) {
 		$dfaStates = [];
 
-		$stateNames = [];
-		foreach ($nfaStates as $nfaState) {
-			$stateNames[] = $nfaState->name;
-		}
 		$powerSet = powerSet($stateNames);
 
 		foreach ($powerSet as $subset) {

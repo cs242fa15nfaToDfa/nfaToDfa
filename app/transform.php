@@ -5,11 +5,11 @@
 	$json = file_get_contents('php://input');
 	$obj = json_decode($json);
 
-	$nfaStates = jsonToStateArray($obj->states);
-	// $transitions = getTransitions($obj);
+	$stateNames = $obj->stateNames;
 	$transitions = $obj->transitions;
+	$nfaStates = jsonToStateArray($obj->states);
 
-	$dfaStates = transformToDfa($nfaStates, $transitions);
+	$dfaStates = transformToDfa($stateNames, $transitions, $nfaStates);
 
 	echo buildJSON($dfaStates);
 ?>

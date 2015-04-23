@@ -4,7 +4,7 @@
 	/**
 	 * Converts the JSON file to an array in php format
 	 * @param  	$obj deserialized JSON object from JavaScript
-	 * @return [type]       [description]
+	 * @return array of states in a php array 
 	 */
 	function jsonToStateArray($obj){
 
@@ -25,7 +25,11 @@
 
 	}
 
-
+	/**
+	 * Returns the transitions of the object
+	 * @param  [type] $obj deserialized json
+	 * @return array  of the possible transitions
+	 */
 	function getTransitions($obj){
 
 		$array = array();
@@ -39,6 +43,11 @@
 
 	}
 
+	/**
+	 * serializes the json to be sent back to the server 
+	 * @param  array $states contains the DFA states
+	 * @return json formatted list of DFA states   
+	 */
 	function buildJSON($states){
 		$json = array();
 

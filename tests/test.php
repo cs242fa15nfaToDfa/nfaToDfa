@@ -5,7 +5,7 @@ class StateTest extends PHPUnit_Framework_TestCase
 {
     public function testPowerSet()
     {
-    	require("state.php");
+    	require("app/state.php");
     	$input = array("A", "B");
 
     	$result = powerSet($input);

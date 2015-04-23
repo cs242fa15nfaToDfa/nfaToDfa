@@ -6,7 +6,7 @@
 	 * @param  	$obj deserialized JSON object from JavaScript
 	 * @return [type]       [description]
 	 */
-	function jsonToStateArray($obj){
+	function jsonToStateArray($obj) {
 
 		$array = array();
 
@@ -26,7 +26,7 @@
 	}
 
 
-	function getTransitions($obj){
+	function getTransitions($obj) {
 
 		$array = array();
 
@@ -39,7 +39,7 @@
 
 	}
 
-	function buildJSON($states){
+	function buildJSON($states) {
 		$json = array();
 
 		$json["states"] = $states;

@@ -21,7 +21,7 @@
 			$array[] = $newState;
 		}
 
-print_r($array);
+// print_r($array);
 
 		return $array;
 

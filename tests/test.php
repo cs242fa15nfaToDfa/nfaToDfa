@@ -18,7 +18,7 @@ class StateTest extends PHPUnit_Framework_TestCase
 
     public function testJsonToStateArray(){
         require("app/json.php");
-        require("app/state.php");
+        // require("app/state.php");
         $json = '{"nodes":[{"name":"A","adjacencyList":{"a":["B","C"],"b":[]}},{"name":"B","adjacencyList":{"a":["A"],"b":["B"]}},{"name":"C","adjacencyList":{"a":[],"b":["A","B"]}}]}';
 
         $input = json_decode($json);
@@ -38,13 +38,10 @@ class StateTest extends PHPUnit_Framework_TestCase
         $cState->setTransition("a", []);
         $cState->setTransition("b", array("A", "B"));
 
-        
-
-        $this->assertContains($aState, $result);
-        $this->assertContains($bState, $result);
-        $this->assertContains($cState, $result);
-
-
+        // can't do assert contains on an array of objects apparently
+        $this->assertEquals($aState, $result[0]);
+        $this->assertEquals($bState, $result[1]);
+        $this->assertEquals($cState, $result[2]);
     }
 
 

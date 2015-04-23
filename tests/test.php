@@ -18,8 +18,7 @@ class StateTest extends PHPUnit_Framework_TestCase
 
     public function testJsonToStateArray(){
         require("app/json.php");
-        // require("app/state.php");
-        $json = '{"nodes":[{"name":"A","adjacencyList":{"a":["B","C"],"b":[]}},{"name":"B","adjacencyList":{"a":["A"],"b":["B"]}},{"name":"C","adjacencyList":{"a":[],"b":["A","B"]}}]}';
+        $json = '{"stateNames":["A","B","C"],"transitions":["a","b"],"states":[{"name":"A","adjacencyList":{"a":["B","C"],"b":[]}},{"name":"B","adjacencyList":{"a":["A"],"b":["B"]}},{"name":"C","adjacencyList":{"a":[],"b":["A","B"]}}]}';
 
         $obj = json_decode($json);
 
@@ -46,11 +45,11 @@ class StateTest extends PHPUnit_Framework_TestCase
 
 
     public function testTransformToDFA(){
-        $json = '{"nodes":[{"name":"A","adjacencyList":{"0":["A","B"],"1":["C"]}},{"name":"B","adjacencyList":{"0":["C"],"1":[]}},{"name":"C","adjacencyList":{"0":[],"1":["B","C"]}}]}';
+        $json = '{"stateNames":["A","B","C"],"transitions":["0","1"],"states":[{"name":"A","adjacencyList":{"0":["A","B"],"1":["C"]}},{"name":"B","adjacencyList":{"0":["C"],"1":[]}},{"name":"C","adjacencyList":{"0":[],"1":["B","C"]}}]}';
         $obj = json_decode($json);
         $stateNames = $obj->stateNames;
         $transitions = $obj->transitions;
-        $nfaStates = jsonToStateArray($obj->objStates);
+        $nfaStates = jsonToStateArray($obj->states);
 
         $output = transformToDfa($stateNames, $transitions, $nfaStates  );
 

@@ -45,7 +45,51 @@ class StateTest extends PHPUnit_Framework_TestCase
     }
 
 
+    public function testTransformToDFA(){
+        
+        $nfaStates = array();
+        $transitions = array("0", "1");
 
+        $aState = new State("A");
+        $aState->setTransition("0", array("A","B"));
+        $aState->setTransition("1", array("C"));
+        $nfaStates[] = $aState;
+
+
+        $bState = new State("B");
+        $bState->setTransition("0", array("C"));
+        $bState->setTransition("1", []);
+        $nfaStates[] = $bState;
+
+        
+        $cState = new State("C");
+        $cState->setTransition("0", []);
+        $cState->setTransition("1", array("B", "C"));
+        $nfaStates[] = $cState;
+
+        $output = transformToDfa($nfaStates, $transitions);
+
+        $this->assertEquals("ABC", $output["ABC"]->adjacencyList["0"]);
+        $this->assertEquals("BC", $output["ABC"]->adjacencyList["1"]);
+
+        $this->assertEquals("C", $output["BC"]->adjacencyList["0"]);
+        $this->assertEquals("BC", $output["BC"]->adjacencyList["1"]);
+
+        $this->assertEquals("@", $output["C"]->adjacencyList["0"]);
+        $this->assertEquals("BC", $output["C"]->adjacencyList["1"]);
+
+        $this->assertEquals("ABC", $output["AB"]->adjacencyList["0"]);
+        $this->assertEquals("C", $output["AB"]->adjacencyList["1"]);
+
+        $this->assertEquals("AB", $output["A"]->adjacencyList["0"]);
+        $this->assertEquals("C", $output["A"]->adjacencyList["1"]);
+
+        $this->assertEquals("@", $output["@"]->adjacencyList["0"]);
+        $this->assertEquals("@", $output["@"]->adjacencyList["1"]);
+
+
+
+    }
 
 
 

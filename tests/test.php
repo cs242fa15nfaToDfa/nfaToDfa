@@ -26,15 +26,15 @@ class StateTest extends PHPUnit_Framework_TestCase
         $result = jsonToStateArray($input);
 
 
-        $aState = new State("A");
+        $aState = new NFAState("A");
         $aState->setTransition("a", array("B","C"));
         $aState->setTransition("b", []);
 
-        $bState = new State("B");
+        $bState = new NFAState("B");
         $bState->setTransition("a", array("A"));
         $bState->setTransition("b", array("B"));
         
-        $cState = new State("C");
+        $cState = new NFAState("C");
         $cState->setTransition("a", []);
         $cState->setTransition("b", array("A", "B"));
 
@@ -52,7 +52,7 @@ class StateTest extends PHPUnit_Framework_TestCase
         $transitions = $obj->transitions;
         $nfaStates = jsonToStateArray($obj->states);
 
-        $output = transformToDfa($stateNames, $transitions, $nfaStates);
+        $output = transformToDfa($stateNames, $transitions, $nfaStates  );
 
         $this->assertEquals("ABC", $output["ABC"]->adjacencyList["0"]);
         $this->assertEquals("BC", $output["ABC"]->adjacencyList["1"]);

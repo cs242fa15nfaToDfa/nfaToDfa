@@ -12,7 +12,7 @@
 
 		foreach($nfaStates as $state){
 			
-			$newState = new State($state->name);
+			$newState = new NFAState($state->name);
 			
 			foreach ($state->adjacencyList as $transition => $toStates) {
 				$newState->setTransition($transition, $toStates);

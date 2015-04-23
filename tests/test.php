@@ -23,22 +23,26 @@ class StateTest extends PHPUnit_Framework_TestCase
 
         $input = json_decode($json);
 
-        $result = array();
+        $result = jsonToStateArray($input);
+
 
         $aState = new State("A");
-        $aState->setTransition("a", ["B","C"]);
+        $aState->setTransition("a", array("B","C"));
         $aState->setTransition("b", []);
-        $result = $aState;
 
         $bState = new State("B");
-        $bState->setTransition("a", ["A"]);
-        $bState->setTransition()
+        $bState->setTransition("a", array("A"));
+        $bState->setTransition("b", array("B"));
+        
+        $cState = new State("C");
+        $cState->setTransition("a", []);
+        $cState->setTransition("b", array("A", "B"));
+
         
 
-            $array[] = $newState;
-
-
-
+        $this->assertContains($aState, $result);
+        $this->assertContains($bState, $result);
+        $this->assertContains($cState, $result);
 
 
     }

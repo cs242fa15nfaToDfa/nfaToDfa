@@ -20,24 +20,52 @@
 			$this->adjacencyList[$transition] = $toStates;
 		}
 	}
+
 	/**
 	 * Given array of node names returns the power set of the nodes
 	 * ex. [A, B] -> [[], [A], [B], [A,B]]
-	 * @param  array  $array Array of node names
-	 * @return array         Array of array of node names
+	 * @param  array  $nodeNames Array of node names
+	 * @return array             Array of array of node names
 	 */
-	function powerSet($array) {
-		$powerSet = [];
-		$powerSet[] = [];
+	function powerSet($stateNames) {
+	    $powerSet = [];
+	    $powerSet[] = []; // add an empty set
 
-		foreach ($array as $element) {
-			foreach ($powerSet as $toJoin) {
-				$elem = [];
-				$elem[] = $toJoin;
-				$powerset[] = array_merge($elem, $combination);
+	    foreach ($stateNames as $stateName) {
+	        foreach ($powerSet as $subset) {
+	        	$otherSubset = [];
+	        	$otherSubset[] = $stateName;
+
+	            $powerSet[] = array_merge($subset, $otherSubset);
+	        }
+	    }
+
+	    return $powerSet;
+	}
+
+	/**
+	 * Main logic of the server, performs the NFA to DFA conversion via subset transformation
+	 * @param  array $nfaStates array of States of an NFA
+	 * @return array            array of States of a DFA, state names will be stringified
+	 */
+	function transformToDfa($nfaStates) {
+		$dfaStates = [];
+
+		$stateNames = [];
+		foreach ($nfaStates as $nfaState) {
+			$stateNames[] = $nfaState->name;
+		}
+		$powerSet = powerSet($stateNames);
+
+		foreach ($powerSet as $subset) {
+			$name = implode($subset);
+			if ($name == "") {
+				$name = "@";
 			}
+			print($name . " ");
 		}
 
-		return $powerSet;
+		// here be magic
+		return $dfaStates;
 	}
 ?>

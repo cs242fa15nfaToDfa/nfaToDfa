@@ -15,5 +15,12 @@
 	}
 
 	$final = powerSet($nodeNames);
-	print_r($final);
+
+	$a = new State("A");
+	$b = new State("B");
+	$c = new State("C");
+
+	$input = array($a, $b, $c);
+
+	transformToDfa($input);
 ?>

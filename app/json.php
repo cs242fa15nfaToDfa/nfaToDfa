@@ -18,7 +18,7 @@
 				$newState->setTransition($transition, $toStates);
 			}
 
-			$array[] = $newState;
+			$array[$state->name] = $newState;
 		}
 
 // print_r($array);

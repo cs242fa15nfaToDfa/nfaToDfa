@@ -62,9 +62,10 @@
 			if ($name == "") {
 				$name = "@";
 			}
-			print($name . " ");
+			$dfaStates[] = new State($name);
 		}
 
+		print_r($dfaStates);
 		// here be magic
 		return $dfaStates;
 	}

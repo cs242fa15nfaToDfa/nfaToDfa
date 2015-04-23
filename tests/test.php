@@ -13,6 +13,6 @@ class StateTest extends PHPUnit_Framework_TestCase
     	$this->assertContains(array(), $result);
     	$this->assertContains(array("A"), $result);
     	$this->assertContains(array("B"), $result);
-    	$this->assertContains(array("A","B"), $result);
+    	$this->assertContains(array("A", "B"), $result);
     }
 }

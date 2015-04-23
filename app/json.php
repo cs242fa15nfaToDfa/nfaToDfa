@@ -6,11 +6,11 @@
 	 * @param  	$obj deserialized JSON object from JavaScript
 	 * @return array of states in a php array 
 	 */
-	function jsonToStateArray($obj) {
+	function jsonToStateArray($nfaStates) {
 
 		$array = array();
 
-		foreach($obj->nodes as $state){
+		foreach($nfaStates as $state){
 			
 			$newState = new State($state->name);
 			

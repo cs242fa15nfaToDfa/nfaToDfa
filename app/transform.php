@@ -4,8 +4,10 @@
 
 	$json = file_get_contents('php://input');
 	$obj = json_decode($json);
-	$nfaStates = jsonToStateArray($obj);
-	$transitions = getTransitions($obj);
+
+	$nfaStates = jsonToStateArray($obj->states);
+	// $transitions = getTransitions($obj);
+	$transitions = $obj->transitions;
 
 	$dfaStates = transformToDfa($nfaStates, $transitions);
 

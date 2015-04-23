@@ -216,7 +216,7 @@ function transformNFA() {
 	var stateObjArray = generateStateObjects(stateArray, transitions);
 
 	// build json
-	var data = buildJSON(stateObjArray);
+	var data = buildJSON(stateArray, transitions, stateObjArray);
 
 	console.log(data);
 
@@ -237,9 +237,11 @@ function transformNFA() {
  * function used to build the JSON that will be sent to the server
  * @return JSON 
  */
-function buildJSON(stateObjArray) {
+function buildJSON(stateNames, transitions, stateObjArray) {
 	var JSONarr = {
-		nodes: stateObjArray
+		stateNames  : stateNames,
+		transitions : transitions,
+		states      : stateObjArray
 	};
 	
 	return JSON.stringify(JSONarr);

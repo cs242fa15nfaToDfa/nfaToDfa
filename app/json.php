@@ -42,7 +42,14 @@
 	}
 
 
+	function buildJSON($states){
+		$json = array();
 
+		$json["states"] = $states;
+
+		return json_encode($json);
+
+	}
 
 
 

@@ -10,14 +10,18 @@
 
 		$array = array();
 
+		//loop through all the states
 		foreach($nfaStates as $state){
 			
+			//initialize a new state with the same name as the current state in the array
 			$newState = new NFAState($state->name);
 			
+			//loop through the adjacency list and use the key value pair as the transition for the state
 			foreach ($state->adjacencyList as $transition => $toStates) {
 				$newState->setTransition($transition, $toStates);
 			}
 
+			//add the new state to the array
 			$array[$state->name] = $newState;
 		}
 
@@ -34,11 +38,15 @@
 
 		$array = array();
 
+		//just need one state, since it has all the transitions
 		$a = $obj->nodes[0];
+
+		//loop through the adjacency list, and add the transition 
 		foreach ($a->adjacencyList as $key => $value) {
 			$array[] = $key;
 		}
 
+		//return the list of transitions
 		return $array;
 
 	}
@@ -51,6 +59,7 @@
 	function buildJSON($states) {
 		$json = array();
 
+		//set the array of states in the JSON equal to the states inputted
 		$json["states"] = $states;
 
 		return json_encode($json);

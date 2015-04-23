@@ -249,6 +249,6 @@ function buildJSON(stateObjArray) {
 
 
 function outputDFA(response) {
-	console.log(response);
+	console.log(JSON.parse(response));
 }
 

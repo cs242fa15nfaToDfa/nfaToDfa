@@ -250,8 +250,11 @@ function buildJSON(stateNames, transitions, stateObjArray) {
 	return JSON.stringify(JSONarr);
 }
 
-/*
-	Function used to get the unreachable states by subtracting the reachable ones
+/**
+ * Function used to get the unreachable states by subtracting the reachable ones
+ * @param  {[type]} states          set of all the states
+ * @param  {[type]} reachableStates set of all the reachable states
+ * @return {[type]}                 set of all the unreachable states
  */
 function arrayDifference(states, reachableStates) {
 	var unreachableStates = [];
@@ -266,8 +269,11 @@ function arrayDifference(states, reachableStates) {
 	return unreachableStates;
 }
 
-/*
-	DFS used to find the reachable states
+/**
+ * DFS used to find the reachable states
+ * @param  {[type]} dfaStates set of all the states in the DFA
+ * @param  {[type]} state     the current state
+ * @param  {[type]} visited   set of all the visited states so far
  */
 function dfs(dfaStates, state, visited) {
 	//add current state to visited states

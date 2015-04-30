@@ -250,22 +250,33 @@ function buildJSON(stateNames, transitions, stateObjArray) {
 	return JSON.stringify(JSONarr);
 }
 
-function arrayDifference(foo, bar) {
-	var baz = [];
+/*
+	Function used to get the unreachable states by subtracting the reachable ones
+ */
+function arrayDifference(states, reachableStates) {
+	var unreachableStates = [];
 
-	$.each(foo, function(key, value) {
-	    if (-1 === bar.indexOf(value)) {
-	        baz.push(value);
+	$.each(states, function(key, value) {
+		//check if the state is reachable, if not, add to the unreachable states
+	    if (-1 === reachableStates.indexOf(value)) {
+	        unreachableStates.push(value);
 	    }
 	});
-	return baz;
+
+	return unreachableStates;
 }
 
-
+/*
+	DFS used to find the reachable states
+ */
 function dfs(dfaStates, state, visited) {
+	//add current state to visited states
 	visited.push(state.name);
+
+	//cycle through neighbors and perform DFS on them
 	$.each(state.adjacencyList, function(transition, nextStateName) {
 		nextState = dfaStates[nextStateName];	
+		//check if they have been visited yet
 		if ($.inArray(nextStateName, visited) === -1)
 			dfs(dfaStates, nextState, visited);
 	})

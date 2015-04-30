@@ -226,7 +226,7 @@ function transformNFA() {
 		method : "POST",
 		data   : data
 	}).done(function(response){
-		outputDFA(response);
+		outputDFA(response, stateArray[0]);
 	});
 }
 
@@ -247,10 +247,54 @@ function buildJSON(stateNames, transitions, stateObjArray) {
 	return JSON.stringify(JSONarr);
 }
 
+function arrayDifference(foo, bar) {
+	var baz = [];
+
+	$.each(foo, function(key, value) {
+	    if (-1 === bar.indexOf(value)) {
+	        baz.push(value);
+	    }
+	});
+	return baz;
+}
 
 
+function dfs(dfaStates, state, visited) {
+	console.log("dfs on ", state, "with visited ", visited);
 
-function outputDFA(response) {
-	console.log(JSON.parse(response));
+	visited.push(state.name);
+
+	$.each(state.adjacencyList, function(i, v) {
+		var nextStateName = v;
+		nextState = dfaStates[nextStateName];	
+		console.log("nextStateName = " + nextStateName);
+
+		console.log("visited ", visited);
+		console.log("is this in it? ", nextStateName);
+		console.log($.inArray(visited, nextStateName));
+
+		if ($.inArray(nextStateName, visited) === -1)
+			dfs(dfaStates, nextState, visited);
+	})
+}
+
+
+function outputDFA(response, firstStateName) {
+	response = JSON.parse(response);
+	console.log(response);
+	console.log(firstStateName);
+
+	var dfaStates = response.states;
+	var firstState = dfaStates[firstStateName];
+	var reachable = [];
+	dfs(dfaStates, firstState, reachable);
+	var dfaStateNames = [];
+	$.each(dfaStates, function(i,v) {
+		dfaStateNames.push(i);
+	});
+	console.log("dfaStateNames", dfaStateNames);
+	console.log("reachable", reachable);
+
+	console.log(arrayDifference(dfaStateNames, reachable));
 }
 

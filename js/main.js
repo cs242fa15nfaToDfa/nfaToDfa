@@ -253,14 +253,19 @@ function buildJSON(stateNames, transitions, stateObjArray) {
 function outputDFA(response) {
 	console.log(JSON.parse(response));
 
-	obj = JSON.parse(response);
+	var obj = JSON.parse(response);
+	var states = obj.states;	
 
-
-	for (state in obj.states) {
-		document.getElementById('output_area').innerHTML += state.name + "<br>";
-
+	for (stateName in states) { 
+		var state = states[stateName];
+		var fixedName = '{'  + state.substates.join() + '}'; 
+		$('#output_area').append(fixedName + '<br>');
 		for (var transition in state.adjacencyList){
-			document.getElementById('output_area').innerHTML += "d(" + state.name + "," + transition + ") = {" + state.adjacencyList[transition] + "}<br>";
+			nextStateName = state.adjacencyList[transition];
+			nextState = states[nextStateName];
+			var nextFixedName = '{'  + nextState.substates.join() + '}';
+
+			$('#output_area').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + '<br>');
 		}		
 	}
 

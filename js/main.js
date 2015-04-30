@@ -252,5 +252,18 @@ function buildJSON(stateNames, transitions, stateObjArray) {
 
 function outputDFA(response) {
 	console.log(JSON.parse(response));
+
+	obj = JSON.parse(response);
+
+
+	for (state in obj.states) {
+		document.getElementById('output_area').innerHTML += state.name + "<br>";
+
+		for (var transition in state.adjacencyList){
+			document.getElementById('output_area').innerHTML += "d(" + state.name + "," + transition + ") = {" + state.adjacencyList[transition] + "}<br>";
+		}		
+	}
+
+
 }
 

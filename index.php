@@ -42,8 +42,14 @@
 									<input TYPE="button" CLASS="special" NAME="button" ID="csn_button" Value="Process" onClick="processStates()">
 									<input TYPE="button" CLASS="special" NAME="resetbutton" Value="Reset" onClick="resetElements()">
 								</form>
-								<div ID="reachable"></div>
-								<div ID="unreachable"></div>
+								<!-- <div ID="reachable"></div> -->
+								<!-- <div ID="unreachable"></div> -->
+								<table ID="reachable">
+								<caption>Reachable</caption>
+								</table>
+								<table ID="unreachable">
+								<caption>Unreachable</caption>
+								</table>
 							</li>
 						</ul>
 					</footer>

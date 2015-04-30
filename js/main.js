@@ -277,8 +277,8 @@ function outputDFA(response, firstStateName) {
 	var response = JSON.parse(response);
 	var dfaStates = response.states;	
 
-	$('#reachable').text('');
-	$('#unreachable').text('');
+	$('#reachable').text('<caption>Reachable</caption>\n');
+	$('#unreachable').text('<caption>Unreachable</caption>\n');
 	
 	var visited = [];
 	dfs(dfaStates, dfaStates[firstStateName], visited);
@@ -293,20 +293,26 @@ function outputDFA(response, firstStateName) {
 
 
 		
-			$('#reachable').append(fixedName + '<br>');
+		// $('#reachable').append(fixedName + '<br>');
 
-			for (var transition in state.adjacencyList){
-				nextStateName = state.adjacencyList[transition];
-				nextState = dfaStates[nextStateName];
-				var nextFixedName = '{'  + nextState.substates.join() + '}';
+		var htmlString = '<th>' + fixedName;
 
+		for (var transition in state.adjacencyList){
+			nextStateName = state.adjacencyList[transition];
+			nextState = dfaStates[nextStateName];
 
-				if (jQuery.inArray(stateName, unreachableStates) == '-1') 
-					$('#reachable').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + '<br>');
-				else
-					$('#unreachable').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + ' UNREACHABLE<br>');
-			}		
+			var deltaString = 'd(' + fixedName + ',' + transition + ')';
+			var nextFixedName = '{'  + nextState.substates.join() + '}';
 
-		}
+			htmlString += '<td>' + deltaString + '<td>' + nextFixedName;
+
+			var id = '#reachable'
+			if (jQuery.inArray(stateName, unreachableStates) > -1)
+				id = '#unreachable';
+			$(id).append('<tr>' + htmlString + '\n');
+			htmlString = '<th>';			
+		}		
+
+	}
 }
 

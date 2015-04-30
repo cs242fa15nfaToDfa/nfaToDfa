@@ -260,19 +260,9 @@ function arrayDifference(foo, bar) {
 
 
 function dfs(dfaStates, state, visited) {
-	console.log("dfs on ", state, "with visited ", visited);
-
 	visited.push(state.name);
-
-	$.each(state.adjacencyList, function(i, v) {
-		var nextStateName = v;
+	$.each(state.adjacencyList, function(transition, nextStateName) {
 		nextState = dfaStates[nextStateName];	
-		console.log("nextStateName = " + nextStateName);
-
-		console.log("visited ", visited);
-		console.log("is this in it? ", nextStateName);
-		console.log($.inArray(visited, nextStateName));
-
 		if ($.inArray(nextStateName, visited) === -1)
 			dfs(dfaStates, nextState, visited);
 	})
@@ -281,16 +271,22 @@ function dfs(dfaStates, state, visited) {
 
 
 function outputDFA(response, firstStateName) {
-	var obj = JSON.parse(response);
-	var states = obj.states;	
+	var response = JSON.parse(response);
+	var dfaStates = response.states;	
+	
+	var visited = [];
+	dfs(dfaStates, dfaStates[firstStateName], visited);
+	dfaStatesNames = [];
+	$.each(dfaStates, function(i,v) { dfaStatesNames.push(i); });
+	console.log(arrayDifference(dfaStatesNames, visited));
 
-	for (stateName in states) { 
-		var state = states[stateName];
+	for (stateName in dfaStates) { 
+		var state = dfaStates[stateName];
 		var fixedName = '{'  + state.substates.join() + '}'; 
 		$('#output_area').append(fixedName + '<br>');
 		for (var transition in state.adjacencyList){
 			nextStateName = state.adjacencyList[transition];
-			nextState = states[nextStateName];
+			nextState = dfaStates[nextStateName];
 			var nextFixedName = '{'  + nextState.substates.join() + '}';
 
 			$('#output_area').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + '<br>');

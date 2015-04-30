@@ -148,6 +148,8 @@ function resetElements() {
 	$("#csn_states").val("");
 	$("#csn_states").prop("disabled", false);
 	$("#csn_transitions").prop("disabled", false);
+	$("#reachable").text("");
+	$("#unreachable").text("");
 }
 
 /**
@@ -273,24 +275,46 @@ function dfs(dfaStates, state, visited) {
 function outputDFA(response, firstStateName) {
 	var response = JSON.parse(response);
 	var dfaStates = response.states;	
+
+	$('#reachable').text('');
 	
 	var visited = [];
 	dfs(dfaStates, dfaStates[firstStateName], visited);
 	dfaStatesNames = [];
 	$.each(dfaStates, function(i,v) { dfaStatesNames.push(i); });
-	console.log(arrayDifference(dfaStatesNames, visited));
+
+	unreachableStates = arrayDifference(dfaStatesNames, visited);
 
 	for (stateName in dfaStates) { 
 		var state = dfaStates[stateName];
 		var fixedName = '{'  + state.substates.join() + '}'; 
-		$('#output_area').append(fixedName + '<br>');
-		for (var transition in state.adjacencyList){
-			nextStateName = state.adjacencyList[transition];
-			nextState = dfaStates[nextStateName];
-			var nextFixedName = '{'  + nextState.substates.join() + '}';
 
-			$('#output_area').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + '<br>');
-		}		
+
+		if (jQuery.inArray(stateName, unreachableStates) == '-1') {
+			$('#reachable').append(fixedName + '<br>');
+
+			for (var transition in state.adjacencyList){
+				nextStateName = state.adjacencyList[transition];
+				nextState = dfaStates[nextStateName];
+				var nextFixedName = '{'  + nextState.substates.join() + '}';
+
+				$('#reachable').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + '<br>');
+			}		
+
+		}
+	}
+
+	for(unreachableStateName in unreachableStates) {
+		var unreachableState = unreachableStates[unreachableStateName];
+		var fixedUnreachableName = '{' + unreachableStates.substates.join() + '}';
+
+		for (var transition in unreachableState.adjacencyList){
+			nextStateName = unreachableState.adjacencyList[transition];
+			nextState = unreachableStates[nextStateName];
+			var nextFixedName = '{' + nextState.substates.join() + '}';
+
+			$('#unreachable').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + 'HELLO<br>');
+		}
 	}
 }
 

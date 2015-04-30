@@ -279,22 +279,22 @@ function dfs(dfaStates, state, visited) {
 }
 
 
+
 function outputDFA(response, firstStateName) {
-	response = JSON.parse(response);
-	console.log(response);
-	console.log(firstStateName);
+	var obj = JSON.parse(response);
+	var states = obj.states;	
 
-	var dfaStates = response.states;
-	var firstState = dfaStates[firstStateName];
-	var reachable = [];
-	dfs(dfaStates, firstState, reachable);
-	var dfaStateNames = [];
-	$.each(dfaStates, function(i,v) {
-		dfaStateNames.push(i);
-	});
-	console.log("dfaStateNames", dfaStateNames);
-	console.log("reachable", reachable);
+	for (stateName in states) { 
+		var state = states[stateName];
+		var fixedName = '{'  + state.substates.join() + '}'; 
+		$('#output_area').append(fixedName + '<br>');
+		for (var transition in state.adjacencyList){
+			nextStateName = state.adjacencyList[transition];
+			nextState = states[nextStateName];
+			var nextFixedName = '{'  + nextState.substates.join() + '}';
 
-	console.log(arrayDifference(dfaStateNames, reachable));
+			$('#output_area').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + '<br>');
+		}		
+	}
 }
 

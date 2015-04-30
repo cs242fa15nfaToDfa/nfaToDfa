@@ -147,6 +147,7 @@ function resetElements() {
 	$("#csn_button").show();
 	$("#csn_states").val("");
 	$("#csn_states").prop("disabled", false);
+	$("#csn_transitions").val("");
 	$("#csn_transitions").prop("disabled", false);
 	$("#reachable").text("");
 	$("#unreachable").text("");

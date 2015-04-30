@@ -149,8 +149,8 @@ function resetElements() {
 	$("#csn_states").prop("disabled", false);
 	$("#csn_transitions").val("");
 	$("#csn_transitions").prop("disabled", false);
-	$("#reachable").text("");
-	$("#unreachable").text("");
+	$('#reachable').hide().val('');
+	$('#unreachable').hide().val('');
 }
 
 /**
@@ -282,29 +282,40 @@ function dfs(dfaStates, state, visited) {
 	})
 }
 
+/**
+ * Simple jQuery wrapper to grab state names from server returned object
+ * @param  object dfaStates DFAStates returned from server
+ * @return array            array of strings
+ */
+function getDfaStateNames(dfaStates) {
+	var dfaStateNames = [];
+	$.each(dfaStates, function(i,v) { dfaStateNames.push(i); });
+	return dfaStateNames
+}
 
 
 function outputDFA(response, firstStateName) {
 	var response = JSON.parse(response);
 	var dfaStates = response.states;	
 
-	$('#reachable').text('<caption>Reachable</caption>\n');
-	$('#unreachable').text('<caption>Unreachable</caption>\n');
+	var reachableTable = $('#reachable').show();
+	var unreachableTable = $('#unreachable').show();
+	reachableTable.find('caption').text('Reachable from '+ firstStateName);
 	
+	// get dfa state names, get namees reachable from first state, and
+	// compute difference to determine unreachable states
+	var dfaStateNames = getDfaStateNames(dfaStates);
 	var visited = [];
 	dfs(dfaStates, dfaStates[firstStateName], visited);
-	dfaStatesNames = [];
-	$.each(dfaStates, function(i,v) { dfaStatesNames.push(i); });
-
-	unreachableStates = arrayDifference(dfaStatesNames, visited);
+	var unreachableStates = arrayDifference(dfaStateNames, visited);
 
 	for (stateName in dfaStates) { 
 		var state = dfaStates[stateName];
 		var fixedName = '{'  + state.substates.join() + '}'; 
 
-
-		
-		// $('#reachable').append(fixedName + '<br>');
+		var table = reachableTable;
+		if (jQuery.inArray(stateName, unreachableStates) > -1)
+			table = unreachableTable;
 
 		var htmlString = '<th>' + fixedName;
 
@@ -317,10 +328,7 @@ function outputDFA(response, firstStateName) {
 
 			htmlString += '<td>' + deltaString + '<td>' + nextFixedName;
 
-			var id = '#reachable'
-			if (jQuery.inArray(stateName, unreachableStates) > -1)
-				id = '#unreachable';
-			$(id).append('<tr>' + htmlString + '\n');
+			table.append('<tr>' + htmlString + '\n');
 			htmlString = '<th>';			
 		}		
 

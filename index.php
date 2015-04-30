@@ -44,10 +44,10 @@
 								</form>
 								<!-- <div ID="reachable"></div> -->
 								<!-- <div ID="unreachable"></div> -->
-								<table ID="reachable">
+								<table ID="reachable" style="display: none;">
 								<caption>Reachable</caption>
 								</table>
-								<table ID="unreachable">
+								<table ID="unreachable" style="display: none;">
 								<caption>Unreachable</caption>
 								</table>
 							</li>

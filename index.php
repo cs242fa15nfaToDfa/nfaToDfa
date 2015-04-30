@@ -7,7 +7,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Transit by TEMPLATED</title>
+		<title>NFA to DFA</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -45,10 +45,10 @@
 								<!-- <div ID="reachable"></div> -->
 								<!-- <div ID="unreachable"></div> -->
 								<table ID="reachable" style="display: none;">
-								<caption>Reachable</caption>
+									<caption>Reachable</caption>
 								</table>
 								<table ID="unreachable" style="display: none;">
-								<caption>Unreachable</caption>
+									<caption>Unreachable</caption>
 								</table>
 							</li>
 						</ul>

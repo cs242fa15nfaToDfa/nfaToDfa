@@ -149,8 +149,8 @@ function resetElements() {
 	$("#csn_states").prop("disabled", false);
 	$("#csn_transitions").val("");
 	$("#csn_transitions").prop("disabled", false);
-	$('#reachable').hide().val('');
-	$('#unreachable').hide().val('');
+	$('#reachable').hide().html('');
+	$('#unreachable').hide().html('');
 }
 
 /**
@@ -252,9 +252,9 @@ function buildJSON(stateNames, transitions, stateObjArray) {
 
 /**
  * Function used to get the unreachable states by subtracting the reachable ones
- * @param  {[type]} states          set of all the states
- * @param  {[type]} reachableStates set of all the reachable states
- * @return {[type]}                 set of all the unreachable states
+ * @param  array states          set of all the states
+ * @param  array reachableStates set of all the reachable states
+ * @return array                 set of all the unreachable states
  */
 function arrayDifference(states, reachableStates) {
 	var unreachableStates = [];
@@ -270,10 +270,10 @@ function arrayDifference(states, reachableStates) {
 }
 
 /**
- * DFS used to find the reachable states
- * @param  {[type]} dfaStates set of all the states in the DFA
- * @param  {[type]} state     the current state
- * @param  {[type]} visited   set of all the visited states so far
+ * DFS used to find the reachable states, modifies the visited array by reference
+ * @param  array  dfaStates set of all the states in the DFA
+ * @param  string state     the current state
+ * @param  array  visited   set of all the visited states so far
  */
 function dfs(dfaStates, state, visited) {
 	//add current state to visited states
@@ -296,7 +296,7 @@ function dfs(dfaStates, state, visited) {
 function getDfaStateNames(dfaStates) {
 	var dfaStateNames = [];
 	$.each(dfaStates, function(i,v) { dfaStateNames.push(i); });
-	return dfaStateNames
+	return dfaStateNames;
 }
 
 
@@ -306,7 +306,7 @@ function outputDFA(response, firstStateName) {
 
 	var reachableTable = $('#reachable').show();
 	var unreachableTable = $('#unreachable').show();
-	reachableTable.find('caption').text('Reachable from '+ firstStateName);
+	reachableTable.html('<caption>Reachable from '+ firstStateName + '</caption>\n');
 	
 	// get dfa state names, get namees reachable from first state, and
 	// compute difference to determine unreachable states
@@ -316,28 +316,25 @@ function outputDFA(response, firstStateName) {
 	var unreachableStates = arrayDifference(dfaStateNames, visited);
 
 	for (stateName in dfaStates) { 
+		// grab the substates and forge them into an array
 		var state = dfaStates[stateName];
 		var fixedName = '{'  + state.substates.join() + '}'; 
-
+		// get the reference to the proper table
 		var table = reachableTable;
 		if (jQuery.inArray(stateName, unreachableStates) > -1)
 			table = unreachableTable;
-
+		// begin the proper table header (only want the name once)
 		var htmlString = '<th>' + fixedName;
 
-		for (var transition in state.adjacencyList){
-			nextStateName = state.adjacencyList[transition];
+		$.each(state.adjacencyList, function(transition, nextStateName) {
 			nextState = dfaStates[nextStateName];
-
-			var deltaString = 'd(' + fixedName + ',' + transition + ')';
 			var nextFixedName = '{'  + nextState.substates.join() + '}';
 
-			htmlString += '<td>' + deltaString + '<td>' + nextFixedName;
+			htmlString += '<td>' + transition + '<td>' + nextFixedName;
 
 			table.append('<tr>' + htmlString + '\n');
-			htmlString = '<th>';			
-		}		
-
+			htmlString = '<th>';	
+		});
 	}
 }
 

@@ -278,6 +278,7 @@ function outputDFA(response, firstStateName) {
 	var dfaStates = response.states;	
 
 	$('#reachable').text('');
+	$('#unreachable').text('');
 	
 	var visited = [];
 	dfs(dfaStates, dfaStates[firstStateName], visited);
@@ -291,7 +292,7 @@ function outputDFA(response, firstStateName) {
 		var fixedName = '{'  + state.substates.join() + '}'; 
 
 
-		if (jQuery.inArray(stateName, unreachableStates) == '-1') {
+		
 			$('#reachable').append(fixedName + '<br>');
 
 			for (var transition in state.adjacencyList){
@@ -299,23 +300,13 @@ function outputDFA(response, firstStateName) {
 				nextState = dfaStates[nextStateName];
 				var nextFixedName = '{'  + nextState.substates.join() + '}';
 
-				$('#reachable').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + '<br>');
+
+				if (jQuery.inArray(stateName, unreachableStates) == '-1') 
+					$('#reachable').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + '<br>');
+				else
+					$('#unreachable').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + ' UNREACHABLE<br>');
 			}		
 
 		}
-	}
-
-	for(unreachableStateName in unreachableStates) {
-		var unreachableState = unreachableStates[unreachableStateName];
-		var fixedUnreachableName = '{' + unreachableStates.substates.join() + '}';
-
-		for (var transition in unreachableState.adjacencyList){
-			nextStateName = unreachableState.adjacencyList[transition];
-			nextState = unreachableStates[nextStateName];
-			var nextFixedName = '{' + nextState.substates.join() + '}';
-
-			$('#unreachable').append('d(' + fixedName + ',' + transition + ') = ' + nextFixedName + 'HELLO<br>');
-		}
-	}
 }
 

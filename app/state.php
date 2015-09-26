@@ -1,133 +1,133 @@
 <?php
-	/**
-	* Class to hold the state object
-	*/
-	class NFAState
-	{
-		public $name;
-		public $adjacencyList = [];
+    /**
+    * Class to hold the state object
+    */
+    class NFAState
+    {
+        public $name;
+        public $adjacencyList = [];
 
-		function __construct($name) {
-			$this->name = $name;
-		}
+        function __construct($name) {
+            $this->name = $name;
+        }
 
-		/**
-		 * Analogous to setTransition in main.js
-		 * @param string $transition lowercase single character string, transition name
-		 * @param array  $toStates   state(s) to transition to
-		 */
-		function setTransition($transition, $toStates) {
-			$this->adjacencyList[$transition] = $toStates;
-		}
-	}
+        /**
+         * Analogous to setTransition in main.js
+         * @param string $transition lowercase single character string, transition name
+         * @param array  $toStates   state(s) to transition to
+         */
+        function setTransition($transition, $toStates) {
+            $this->adjacencyList[$transition] = $toStates;
+        }
+    }
 
- 	/**
- 	 * Identical to NFAState except that the adjacency list maps a transition to a DFAState name
- 	 *  
- 	 */
-	class DFAState extends NFAState
-	{
-		public $substates; // easier to iterate through these than exploding the state name
+    /**
+     * Identical to NFAState except that the adjacency list maps a transition to a DFAState name
+     *  
+     */
+    class DFAState extends NFAState
+    {
+        public $substates; // easier to iterate through these than exploding the state name
 
-		function setSubstates($substates) {
-			$this->substates = $substates;
-		}
-	}
+        function setSubstates($substates) {
+            $this->substates = $substates;
+        }
+    }
 
-	/**
-	 * Given array of node names returns the power set of the nodes
-	 * ex. [A, B] -> [[], [A], [B], [A,B]]
-	 * @param  array  $nodeNames Array of node names
-	 * @return array             Array of array of node names
-	 */
-	function powerSet($stateNames) {
-	    $powerSet = [];
-	    $powerSet[] = []; // add an empty set
+    /**
+     * Given array of node names returns the power set of the nodes
+     * ex. [A, B] -> [[], [A], [B], [A,B]]
+     * @param  array  $nodeNames Array of node names
+     * @return array             Array of array of node names
+     */
+    function powerSet($stateNames) {
+        $powerSet = [];
+        $powerSet[] = []; // add an empty set
 
-	    foreach ($stateNames as $stateName) {
-	        foreach ($powerSet as $subset) {
-	        	$otherSubset = [];
-	        	$otherSubset[] = $stateName;
+        foreach ($stateNames as $stateName) {
+            foreach ($powerSet as $subset) {
+                $otherSubset = [];
+                $otherSubset[] = $stateName;
 
-	        	// don't need array_unique here because the powerset elements get added as such
-	        	// [[]]                   -> add([A])
-	        	// [[], [A]]              -> add([B])
-	        	// [[], [A], [B], [A, B]] -> add([C])
-	        	// [[], [A], [B], [A, B], [C], [A, C], [B, C], [A, B, C]]
-	        	// because of nature of the merge with only ne
-	        	$output = array_merge($subset, $otherSubset);
-	        	sort($output);
-	            $powerSet[] = $output;
-	        }
-	    }
+                // don't need array_unique here because the powerset elements get added as such
+                // [[]]                   -> add([A])
+                // [[], [A]]              -> add([B])
+                // [[], [A], [B], [A, B]] -> add([C])
+                // [[], [A], [B], [A, B], [C], [A, C], [B, C], [A, B, C]]
+                // because of nature of the merge with only ne
+                $output = array_merge($subset, $otherSubset);
+                sort($output);
+                $powerSet[] = $output;
+            }
+        }
 
-	    return $powerSet;
-	}
- 	
- 	/**
- 	 * Takes an array of NFAState names and spits out a DFAState name, made to get rid of duplicate code
- 	 * @param  array  $nfaStateNames Array of component NFA substate names, i.e. [A,B,D] or []
- 	 * @return string                equivalent DFAState name, i.e. ABD or @
- 	 */
-	function generateDFAStateName($nfaStateNames) {
-		$name = implode($nfaStateNames);
-		if ($name == "") {
-			$name = "@"; // chosen @ to be the null state (rejecting)
-		}
-		return $name;
-	}
+        return $powerSet;
+    }
+    
+    /**
+     * Takes an array of NFAState names and spits out a DFAState name, made to get rid of duplicate code
+     * @param  array  $nfaStateNames Array of component NFA substate names, i.e. [A,B,D] or []
+     * @return string                equivalent DFAState name, i.e. ABD or @
+     */
+    function generateDFAStateName($nfaStateNames) {
+        $name = implode($nfaStateNames);
+        if ($name == "") {
+            $name = "@"; // chosen @ to be the null state (rejecting)
+        }
+        return $name;
+    }
 
-	/**
-	 * Main logic of the server, performs the NFA to DFA conversion via subset transformation
-	 * @param  array $stateNames  array of NFA state names for easy access
-	 * @param  array $transitions array of transitions for easy access
-	 * @param  array $nfaStates   array of States of an NFA generated by jsonToStateArray function
-	 * @return array              array of States of a DFA, state names will be stringified
-	 */
-	function transformToDfa($stateNames, $transitions, $nfaStates) {
-		$dfaStates = [];
+    /**
+     * Main logic of the server, performs the NFA to DFA conversion via subset transformation
+     * @param  array $stateNames  array of NFA state names for easy access
+     * @param  array $transitions array of transitions for easy access
+     * @param  array $nfaStates   array of States of an NFA generated by jsonToStateArray function
+     * @return array              array of States of a DFA, state names will be stringified
+     */
+    function transformToDfa($stateNames, $transitions, $nfaStates) {
+        $dfaStates = [];
 
-		// generate an array of blank DFAStates based on the power set of the NFA States
-		$powerSet = powerSet($stateNames);
-		foreach ($powerSet as $subset) {
-			$name = generateDFAStateName($subset);
-			$d = new DFAState($name);
-			$d->setSubstates($subset);
-			$dfaStates[$name] = $d;
-		}
+        // generate an array of blank DFAStates based on the power set of the NFA States
+        $powerSet = powerSet($stateNames);
+        foreach ($powerSet as $subset) {
+            $name = generateDFAStateName($subset);
+            $d = new DFAState($name);
+            $d->setSubstates($subset);
+            $dfaStates[$name] = $d;
+        }
 
-		/**
-		 * Take a DFAState and merge all of the states in the transition sets of its
-		 * component substates
-		 *
-		 * For instance, let NFAStates:
-		 * A where d(A, 0) = [B]
-		 * B where d(B, 0) = [A]
-		 *
-		 * then for DFAState:
-		 * AB, we need d(AB, 0) = AB
-		 */
-		foreach($dfaStates as $dfaState) {
-			foreach($transitions as $transition) {
-				$collector = []; // will hold the set of destination states
+        /**
+         * Take a DFAState and merge all of the states in the transition sets of its
+         * component substates
+         *
+         * For instance, let NFAStates:
+         * A where d(A, 0) = [B]
+         * B where d(B, 0) = [A]
+         *
+         * then for DFAState:
+         * AB, we need d(AB, 0) = AB
+         */
+        foreach($dfaStates as $dfaState) {
+            foreach($transitions as $transition) {
+                $collector = []; // will hold the set of destination states
 
-				foreach ($dfaState->substates as $substateName) {
-					$nfaState = $nfaStates[$substateName]; // get access to the NFA object by name
-					$toStates = $nfaState->adjacencyList[$transition];
-					// merge the states in the adjacencyLists of all the component NFA states
-					// use array_unique to weed out duplicates
-					$collector = array_unique(array_merge($collector, $toStates));
-				}
-				
-				// need to call sort so that the DFAState names are consistent, i.e. BA vs. AB
-				sort($collector);
-				$toState = generateDFAStateName($collector);
+                foreach ($dfaState->substates as $substateName) {
+                    $nfaState = $nfaStates[$substateName]; // get access to the NFA object by name
+                    $toStates = $nfaState->adjacencyList[$transition];
+                    // merge the states in the adjacencyLists of all the component NFA states
+                    // use array_unique to weed out duplicates
+                    $collector = array_unique(array_merge($collector, $toStates));
+                }
+                
+                // need to call sort so that the DFAState names are consistent, i.e. BA vs. AB
+                sort($collector);
+                $toState = generateDFAStateName($collector);
 
-				$dfaState->setTransition($transition, $toState);
+                $dfaState->setTransition($transition, $toState);
 
-			}
-		}
+            }
+        }
 
-		return $dfaStates;
-	}
+        return $dfaStates;
+    }
 ?>
